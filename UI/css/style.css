@@ -477,7 +477,11 @@ button, input {
     text-overflow: ellipsis;
     overflow: hidden;
 }
-
+.q-reaction a{
+    text-decoration: none;
+    margin-right: 10px;
+    color: black;
+}
 .post-question textarea{
     margin-top: 25px;
     width: 438%;
