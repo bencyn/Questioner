@@ -46,7 +46,7 @@ Authors
 
 License
 ----------
-This project is licensed under the MIT license. See [LICENSE](https://github.com/kathy254/Questioner-UI/blob/master/LICENSE) for details.
+This project is licensed under the MIT license.
 
 Contribution
 ---------------
