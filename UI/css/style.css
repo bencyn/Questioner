@@ -507,6 +507,10 @@ button, input {
     font-size: 15px;
     box-sizing: border-box;
 }
+.post-comment .m-content {
+   border:none;
+}
+
 footer {
     background:#fafafb;
     height: 30px;
@@ -533,6 +537,12 @@ footer {
   .post-question form{
     max-width: calc(50% - 0px);
   }
+  
+}
+@media (max-width: 600px){
+    .post-question button {
+        width: 196%;
+    }
 }
 @media (min-width: 410px){
     .post-question textarea{
@@ -589,4 +599,7 @@ footer {
   .post-question textarea{
      max-width: calc(500% - 0px);
   }
+  .post-comment textarea {
+    max-width: calc(400% - 0px);
+    }
 }
