@@ -510,7 +510,34 @@ button, input {
 .post-comment .m-content {
    border:none;
 }
-
+.profile .m-img img {
+    background-position: 50%;
+    background-size: cover;
+    border-radius: 8px;
+    height: auto;
+    position: relative;
+    width: 50%;
+}
+.profile .meetup-container{
+    border: none;
+    box-shadow: none;
+}
+.profile .m-location {
+   font-size: 30px;
+    text-align: left;
+    padding: 7px;
+    stroke: transparent;
+    /*margin-top: 50px;*/
+    height: auto;
+    /*color: #2e3e48a6;*/
+}
+.profile .meetup-item{
+    height: 248px ;
+}
+.t-title{
+    font-weight: 500;
+    color: #444444 !important;
+}
 footer {
     background:#fafafb;
     height: 30px;
