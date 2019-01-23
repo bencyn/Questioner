@@ -24,25 +24,35 @@ class Validators():
         for key,value in input.items():
             if value is not None:
                 if not value.strip():
-                    return make_response(jsonify({
-                        "status": 400,
-                        "error": "{} cannot be empty".format(key)
-                    })), 400
-                    
+                    return self.validate_whitespaces(key)
                 if key == "email":
-                    if  not re.match(r'^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$',
-                                        value):
-                        return jsonify({'status': 400,
-                                    'error': "email provided is invalid"}),400
-                # if key == "password":
-                #     if 
+                    return self.validate_email(value)
             else:
-                return jsonify({'status': 400,
-                                 "error": "{} field required".format(key)
-                            }),400
+               return self.validate_required_field(key)
 
     def validate_missing_data(self):
         """ validates missing json object"""
-        
+
         return jsonify({'status': 400,
                         'error': "Bad request: attach missing fields"}),400
+
+    def validate_whitespaces(self,key):
+        """ return reponse for field with whitespaces"""
+        return jsonify({
+                        "status": 400,
+                        "error": "{} cannot be empty".format(key)
+                    }), 400
+
+    def validate_email(self,value):
+        """checks for a valid email"""
+        if  not re.match(r'^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$',
+                                        value):
+            return jsonify({'status': 400,
+                        'error': "email provided is invalid"}),400
+                        
+    def validate_required_field(self,key):
+        """returns a response for required fields"""
+
+        return jsonify({'status': 400,
+                                 "error": "{} field required".format(key)
+                            }),400
