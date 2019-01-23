@@ -52,9 +52,13 @@ def register():
     password = data.get('password')
     username = data.get('username')
     is_admin = data.get('is_admin')
-    
+    confirm_password =data.get('confirm_password')
+
+    if password != confirm_password:
+        return jsonify({'msg': 'confirmation password and password do not match' }), 401
+
     val_input = {"firstname":firstname,"lastname":lastname,"username":username,
-        "email":email,"password":password}
+        "email":email,"password":password,"confirm_password":confirm_password}
    
     validate = validator._validate(val_input)
    
@@ -78,11 +82,10 @@ def login():
 
     username = data.get('username')
     password = data.get('password')
-    # confirm_password = request.get_json()['confirm_password']
-
 
     val_input = {"username":username,"password":password}
     validate = validator._validate(val_input)
+    
    
     if validate:
         return validate
