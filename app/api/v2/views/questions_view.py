@@ -21,9 +21,9 @@ def create_question(meetup_id):
     if not data:
         return jsonify({"Message": 'Cannot send empty data'}),409
     else:
-        title = request.get_json()['title']
-        body = request.get_json()['body']
-        user_id = request.get_json()['user_id']
+        title = data.get('title')
+        body = data.get('body')
+        user_id = data.get('user_id')
         val_input = {"title":title,"body":body,"user_id":user_id}
     
         validate = validator._validate(val_input)
