@@ -14,10 +14,10 @@ validator = Validators()
 @user_v2.route("/all", methods=['GET'])
 def get_all_users():
     ''' this endpoints allows a user to fetch all registered users'''
-    users = user_object.get_all("users")
+    all_users = user_object.get_all("users")
     return jsonify({
         "status":200,
-        "users":users
+        "users":all_users
     }),200
 
 @user_v2.route("/<int:id>", methods = ['GET'])
@@ -44,14 +44,14 @@ def register():
     if not data:
         return jsonify({"Message": 'Cannot send empty data'}),409
     
-    firstname = request.get_json()['firstname']
-    lastname = request.get_json()['lastname']
-    othername = request.get_json()['othername']
-    email = request.get_json()['email']
-    phone_number = request.get_json()['phone_number']
-    password = request.get_json()['password']
-    username = request.get_json()['username']
-    is_admin = request.get_json()['is_admin']
+    firstname = request.get_json().get('firstname')
+    lastname = request.get_json().get('lastname')
+    othername = request.get_json().get('othername')
+    email = request.get_json().get('email')
+    phone_number = request.get_json().get('phone_number')
+    password = request.get_json().get('password')
+    username = request.get_json().get('username')
+    is_admin = request.get_json().get('is_admin')
     
     val_input = {"firstname":firstname,"lastname":lastname,"username":username,
         "email":email,"password":password}
@@ -76,8 +76,8 @@ def login():
     if not request.data:
         return validator.validate_missing_data()
 
-    username = request.get_json()['username']
-    password = request.get_json()['password']
+    username = request.get_json().get('username')
+    password = request.get_json().get('password')
     # confirm_password = request.get_json()['confirm_password']
 
 
