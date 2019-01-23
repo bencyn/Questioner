@@ -70,7 +70,36 @@ class User(BaseModel):
         else:
             return jsonify({'msg': 'user does not exist' }), 404
 
+    def get_all_users(self):
+        """ get all users """
 
+        all_users = self.get_all("users")
+        if all_users:
+            return jsonify({
+                "status":200,
+                "users":all_users
+            }),200
+        else:
+            return jsonify({
+                "status":404,
+                "error":"No users registered"
+            }),404
+
+    def get_user_by_id(self,id):
+        """ get a specific by users id"""
+
+        user =self.get_by_key("users","id",id)
+        if user:
+            return jsonify({
+                "status":200,
+                "user":user
+            }),200
+        else:
+            return jsonify({
+                "status":404,
+                "error":"User not found"
+            }),404
+   
     # def get_user_by_id(self,id):
     #     self.id =id
     #     cur=conn.cursor()
