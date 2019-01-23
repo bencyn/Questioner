@@ -1,13 +1,15 @@
 from datetime import datetime
 from flask import Flask, json, jsonify
 from .base_model import BaseModel
+import app,re
 
 class Question(BaseModel):
     """ questions class """
     def __init__(self):
         """initialize and define objects """
         super().__init__()
-       
+        self.current_user = app.get_jwt_identity()
+
     def create_question(self,**kwargs):
         """" defines the logic for adding a question """
 
@@ -26,7 +28,6 @@ class Question(BaseModel):
                 "error": "{} not found".format("meetup record")
             }), 404
         else:
-            #  id | meetup_id | user_id | created_by | title | body | votes | created_on 
             self.user_id = user[0]["id"]
             sql = """ INSERT INTO questions (meetup_id,created_by,title,body,votes)
                 VALUES({},{},'{}','{}','{}') RETURNING questions.id;""".format(self.meetup_id,self.user_id,
@@ -42,10 +43,10 @@ class Question(BaseModel):
         ''' get question by key id '''
         pass
 
-    def upvote_question(self,**kwargs):
+    def upvote_question(self,question_id):
 
-        self.username=kwargs['username']
-        self.question_id=kwargs['question_id']
+        self.username=self.current_user
+        self.question_id=question_id
         self.vote_count =1
 
         user = self.get_by_key("users","username",self.username)
@@ -84,10 +85,10 @@ class Question(BaseModel):
                         "message":"sucessfully upvoted question",
                 }), 201
 
-    def downvote_question(self,**kwargs):
+    def downvote_question(self,question_id):
 
-        self.username=kwargs['username']
-        self.question_id=kwargs['question_id']
+        self.username=self.current_user
+        self.question_id=question_id
         self.vote =1
 
         user = self.get_by_key("users","username",self.username)
