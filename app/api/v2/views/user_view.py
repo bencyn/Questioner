@@ -14,27 +14,15 @@ validator = Validators()
 @user_v2.route("/all", methods=['GET'])
 def get_all_users():
     ''' this endpoints allows a user to fetch all registered users'''
-    all_users = user_object.get_all("users")
-    return jsonify({
-        "status":200,
-        "users":all_users
-    }),200
+
+    return user_object.get_all_users()
+   
 
 @user_v2.route("/<int:id>", methods = ['GET'])
 def get_user(id):
     ''' this endpoints allow a user to get a specific user by id'''
-    user =user_object.get_by_key("users","id",id)
-    if user:
-        return jsonify({
-            "status":200,
-            "user":user
-        }),200
-    else:
-        return jsonify({
-            "status":404,
-            "error":"User not found"
-        }),404
-   
+    return user_object.get_user_by_id(id)
+
 
 @user_v2.route('/signup', methods = ['POST'])
 def register():
