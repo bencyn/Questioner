@@ -73,21 +73,9 @@ def create_meetup(id):
         if validate:
             return validate
         else:
-            user = user_object.get_by_key("users","id",id)
-            if user:
-                admin = user[0]["is_admin"] 
-                if admin == "1":
-                    meetup_details = {"topic":topic,"location":location,"images":images,"happening_on":happening_on,"tags":tags,"user_id":id}
-                    meetup = meetup_object.create_meetup(**meetup_details)
-                    return jsonify({ 
-                        "status": 201,
-                        "data":meetup,
-                        "message":"meetup record created successfully",
-                    }), 201
-                else:
-                    return jsonify({'msg': 'user is not an admin' }), 401
-            else:
-                return jsonify({'msg': 'user does not exist' }), 404
+            meetup_details = {"topic":topic,"location":location,"images":images,"happening_on":happening_on,"tags":tags,"user_id":id}
+            meetup = meetup_object.create_meetup(**meetup_details)
+            return meetup
 
 
 
