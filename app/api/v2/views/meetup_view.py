@@ -13,10 +13,10 @@ validator = Validators()
 @meetup_v2.route("/upcoming/", methods=['GET'])
 def get_upcoming_meetups():
     ''' fetch all meetup records'''
-    meetup =meetup_object.get_all("meetups")
+    upcoming_meetups =meetup_object.get_all("meetups")
     return jsonify({
         "status":200,
-        "meetup":meetup
+        "meetup":upcoming_meetups
     }),200
 
 @meetup_v2.route("/<int:id>", methods = ['GET'])
