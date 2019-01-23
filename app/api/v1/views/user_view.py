@@ -53,7 +53,7 @@ def register():
                 return jsonify({'status': 400,
                             'error': "email provided is invalid"}),400
     user_details ={"firstname":firstname,"lastname":lastname,"othername":othername,"email":email,
-                    "phone_number":phoneNUmber,"username":username,"is_admin":isAdmin}
+                    "phone_number":phoneNUmber,"password":password,"username":username,"is_admin":isAdmin}
         
     user = user_object.create_user(**user_details)
     
