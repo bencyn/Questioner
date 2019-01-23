@@ -44,14 +44,14 @@ def register():
     if not data:
         return jsonify({"Message": 'Cannot send empty data'}),409
     
-    firstname = request.get_json().get('firstname')
-    lastname = request.get_json().get('lastname')
-    othername = request.get_json().get('othername')
-    email = request.get_json().get('email')
-    phone_number = request.get_json().get('phone_number')
-    password = request.get_json().get('password')
-    username = request.get_json().get('username')
-    is_admin = request.get_json().get('is_admin')
+    firstname = data.get('firstname')
+    lastname = data.get('lastname')
+    othername = data.get('othername')
+    email = data.get('email')
+    phone_number = data.get('phone_number')
+    password = data.get('password')
+    username = data.get('username')
+    is_admin = data.get('is_admin')
     
     val_input = {"firstname":firstname,"lastname":lastname,"username":username,
         "email":email,"password":password}
@@ -72,12 +72,12 @@ def register():
 @user_v2.route('/login', methods = ['POST'])
 def login():
     """ this endpoint allows a user to login and auto-generate an auth token """
-
+    data = request.get_json()
     if not request.data:
         return validator.validate_missing_data()
 
-    username = request.get_json().get('username')
-    password = request.get_json().get('password')
+    username = data.get('username')
+    password = data.get('password')
     # confirm_password = request.get_json()['confirm_password']
 
 
