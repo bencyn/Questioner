@@ -23,14 +23,14 @@ def create_question(meetup_id):
     else:
         title = data.get('title')
         body = data.get('body')
-        user_id = data.get('user_id')
-        val_input = {"title":title,"body":body,"user_id":user_id}
+        current_user = app.get_jwt_identity()
+        val_input = {"title":title,"body":body}
     
         validate = validator._validate(val_input)
         if validate:
             return validate
         else:
-            question_details = {"title":title,"body":body,"meetup_id":meetup_id,"user_id":user_id}
+            question_details = {"title":title,"body":body,"meetup_id":meetup_id,"username":current_user}
             question = question_object.create_question(**question_details)
             return question
 
