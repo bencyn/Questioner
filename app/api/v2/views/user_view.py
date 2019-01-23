@@ -65,6 +65,7 @@ def register():
     if validate:
         return validate
     else:    
+
         passwordHash = generate_password_hash(password)
         access_token = app.create_access_token(identity=username)
         user_details ={"firstname":firstname,"lastname":lastname,"othername":othername,"email":email,
@@ -90,21 +91,9 @@ def login():
     if validate:
         return validate
     else:
-        user = user_object.get_by_key("users","username",username)
-        if user:
-            validate_password = check_password_hash(user[0]["password"], password)
-            if validate_password:
-                jwt_token = app.create_access_token(identity=username)
-                return jsonify({ 
-                    "status": 201,
-                    "data":[{"token":jwt_token,"user":user}],
-                    "message":"user logged in successfully",
-                }), 201
-            return jsonify({'msg': 'incorrect username/password combination' }), 401
-        else:
-            return jsonify({'msg': 'user does not exist' }), 404
-        
-
+        user_details= val_input
+        return user_object.login_user(**user_details)
+      
 @auth_v2.route('/token', methods=['GET'])
 @app.jwt_required
 def protected():
