@@ -20,16 +20,19 @@ class Validators():
         """ validate empty strings and email fields"""
         for key,value in input.items():
             if value is not None:
-                if not value.strip():
-                    error ="{} cannot be empty".format(key)
-                    return self.get_response(error)
-                if key == "email":
-
-                    return self.validate_email(value)
+                return self.validate_whitespace(value,key)
             else:
                error ="{} field required".format(key)
                return self.get_response(error)
 
+
+    def validate_whitespace(self,value,key):
+        """checks for whitespace in values"""
+        if not value.strip():
+            error ="{} cannot be empty".format(key)
+            return self.get_response(error)
+        if key == "email":
+            return self.validate_email(value)
 
     def validate_email(self,value):
         """checks for a valid email"""
