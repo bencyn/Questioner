@@ -7,7 +7,6 @@ from app.database.connect import Connection
 conn = Connection()
 
 from instance.config import app_config
-from app.api.v1.views import meetup_view,questions_view,user_view
 from app.api.v2.views.meetup_view import meetup_v2
 from app.api.v2.views.user_view import user_v2,auth_v2
 from app.api.v2.views.questions_view import v2 as question_v2
@@ -18,11 +17,6 @@ def create_app(config):
 
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(app_config[config])
-   
-    app.register_blueprint(meetup_view.meetup)
-    app.register_blueprint(questions_view.v1)
-    app.register_blueprint(user_view.user)
-    app.register_blueprint(user_view.auth)
     app.register_blueprint(question_v2)
     app.register_blueprint(meetup_v2)
     app.register_blueprint(user_v2)
