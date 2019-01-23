@@ -100,12 +100,3 @@ class User(BaseModel):
                 "error":"User not found"
             }),404
    
-    # def get_user_by_id(self,id):
-    #     self.id =id
-    #     cur=conn.cursor()
-    #     query="""SELECT * FROM users WHERE id ={}""".format(self.id)
-    #     cur.execute(query)
-    #     self.user=cur.fetchall()
-    #     # curr.close()
-    
-    #     return self.user
