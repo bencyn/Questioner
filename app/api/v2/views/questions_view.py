@@ -39,18 +39,14 @@ def create_question(meetup_id):
 @app.jwt_required
 def upvote_question(question_id):
     """ question upvote endpoint logic """
-    current_user = app.get_jwt_identity()
-    vote_details = {"username":current_user,"question_id":question_id}
-    upvote = question_object.upvote_question(**vote_details)
-    return upvote
+   
+    return question_object.upvote_question(question_id)
   
 
 @v2.route("/questions/<int:question_id>/downvote", methods=['PATCH'])
 @app.jwt_required
 def downvote_question(question_id):
     """ question downvote endpoint logic """
-    current_user = app.get_jwt_identity()
-    vote_details = {"username":current_user,"question_id":question_id}
-    downvote = question_object.downvote_question(**vote_details)
-    return downvote
+    
+    return question_object.downvote_question(question_id)
   
