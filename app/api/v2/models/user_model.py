@@ -74,24 +74,26 @@ class User(BaseModel):
         """ get all users """
 
         all_users = self.get_all("users")
+        key="users"
         error = "No users registered"
-        return self.message_response(all_users,error)
+        return self.message_response(all_users,error,key)
       
 
     def get_user_by_id(self,id):
         """ get a specific by users id"""
 
         user =self.get_by_key("users","id",id)
+        key="user"
         error = "User not found"
-        return self.message_response(user,error)
+        return self.message_response(user,error,key)
       
    
-    def message_response(self,value,error):
+    def message_response(self,value,error,key):
         """return message if true or false"""
         if value:
             return jsonify({
                 "status":200,
-                "users":value
+                "{}".format(key):value
             }),200
         else:
             return jsonify({
