@@ -18,7 +18,7 @@ before_script:
  
 # Run tests
 script:
-    - py.test
+    - pytest --cov
 
 after_success:
     - coveralls
