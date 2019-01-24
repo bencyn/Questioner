@@ -84,9 +84,10 @@ def login():
         user_details= val_input
         return user_object.login_user(**user_details)
       
-@auth_v2.route('/token', methods=['GET'])
+@auth_v2.route('/token/user', methods=['GET'])
 @app.jwt_required
-def protected():
+def get_user_by_id():
     """ access identity of the current user """
     current_user = app.get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200
+    user =user_object.get_by_key("users","username",current_user)
+    return jsonify({"user":user}), 200
