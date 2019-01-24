@@ -18,19 +18,37 @@ class Validators():
     def _validate(self,input):
 
         """ validate empty strings and email fields"""
+        regex = '[a-zA-Z0-9]'
+
         for key,value in input.items():
             if value is not None:
                 if not value.strip():
                     error ="{} cannot be empty".format(key)
                     return self.get_response(error)
-                if not re.match(r'^([a-z])',
-                                        value):
+
+                if key !="phone_number" and not re.match(regex,value):
                     error ="{} input contains invalid characters".format(key)
                     return self.get_response(error)
 
                 if key == "email":
                     return self.validate_email(value)
 
+                if key == "phone_number":
+                    if value[0] == '+':
+                        if not value[1:].isdigit(): 
+                            error ="phone number invalid"
+                            return self.get_response(error)
+                    elif value[0] == '0':
+                        if len(value) != 10:
+                            error ="phone number invalid"
+                            return self.get_response(error)
+                    
+                    elif value[0] != '0':
+                        if len(value) != 9:
+                            error ="phone number invalid"
+                            return self.get_response(error)
+
+                            
             else:
                 error ="{} field required".format(key)
                 return jsonify({'status': 400,
@@ -48,7 +66,13 @@ class Validators():
                                         value):
             error = "email provided is invalid"
             return self.get_response(error)
-                        
+    
+    def validate_phone_number(self,value,key):
+        """ checks for a valid phonenumber"""
+        if not re.match(r'^(?:\+?)?[07]\d{9,13}$' ,value):
+            error ="{} invalid".format(key)
+            return self.get_response(error)
+
     def get_response(self,error):
         """returns an error response based on the error values"""
 
