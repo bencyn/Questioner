@@ -1,6 +1,6 @@
 from flask import Flask, json, jsonify, request, make_response, Blueprint
 from datetime import datetime
-import app
+import app,re
 from ..models import questions_model,meetup_model,user_model
 from ....api.v2 import v2
 from app.api.utils.validators import Validators
@@ -9,7 +9,6 @@ validator = Validators()
 question_object=questions_model.Question()
 meetup_object = meetup_model.Meetup()
 user_object = user_model.User()
-
 
 @v2.route("/meetups/<int:meetup_id>/questions", methods=['POST'])
 @app.jwt_required
@@ -39,14 +38,14 @@ def create_question(meetup_id):
 @app.jwt_required
 def upvote_question(question_id):
     """ question upvote endpoint logic """
-   
-    return question_object.upvote_question(question_id)
+    current_user = app.get_jwt_identity()
+    return question_object.upvote_question(current_user,question_id)
   
 
 @v2.route("/questions/<int:question_id>/downvote", methods=['PATCH'])
 @app.jwt_required
 def downvote_question(question_id):
     """ question downvote endpoint logic """
-    
-    return question_object.downvote_question(question_id)
+    current_user = app.get_jwt_identity()
+    return question_object.downvote_question(current_user,question_id)
   
