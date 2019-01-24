@@ -26,16 +26,23 @@ class Question(BaseModel):
                 "error": "{} not found".format("meetup record")
             }), 404
         else:
-            self.user_id = user[0]["id"]
-            sql = """ INSERT INTO questions (meetup_id,created_by,title,body,votes)
-                VALUES({},{},'{}','{}','{}') RETURNING questions.id;""".format(self.meetup_id,self.user_id,
-                    self.title,self.body,self.votes)
-            save_question=self.save_data(sql)
-            question =self.get_by_key("questions","id",save_question["id"])
-            return jsonify({"status": 201,
-                    "question":question,
-                    "message":"question posted successfully",
-            }), 201
+            question = self.check_if_question_exists("questions",**kwargs)
+            if question:  
+                return jsonify({
+                    "status": 401,
+                    "error": "question already exists"
+                }), 401
+            else:
+                self.user_id = user[0]["id"]
+                sql = """ INSERT INTO questions (meetup_id,created_by,title,body,votes)
+                    VALUES({},{},'{}','{}','{}') RETURNING questions.id;""".format(self.meetup_id,self.user_id,
+                        self.title,self.body,self.votes)
+                save_question=self.save_data(sql)
+                question =self.get_by_key("questions","id",save_question["id"])
+                return jsonify({"status": 201,
+                        "question":question,
+                        "message":"question posted successfully",
+                }), 201
 
     def get_question(self,id):
         ''' get question by key id '''
@@ -60,23 +67,30 @@ class Question(BaseModel):
         else:
             self.user_id = user[0]["id"]
             self.current_vote = question[0]["votes"]
-            vote = self.check_if_vote_exists(self.user_id,self.question_id)
-            # check if vote exists
+            vote = self.check_if_vote_exists(self.user_id,self.question_id,status="upvote")
+
+            # check if downvote exists and delete
             if vote:
                 return jsonify({
                     "status": 401,
-                    "error": "user already voted"
+                    "error": "user already upvoted the question"
                 }), 401
             else:
+                # delete downvote
+                downvote_sql = """DELETE FROM votes WHERE user_id ='{}' AND question_id='{}' AND number=-1;""".format(self.user_id,self.question_id)
+                self.delete_data(downvote_sql)
+
+                # add  upvote
                 vote_sql = """ INSERT INTO votes (user_id,question_id,number)
                     VALUES('{}','{}','{}') RETURNING votes.id;""".format(self.user_id,self.question_id,self.vote_count)
-
                 self.save_data(vote_sql)
                 new_votes = self.current_vote +1
+                
+                # update question vote
                 update_sql= """UPDATE questions SET votes='{}'  WHERE id='{}' RETURNING questions.id;""".format(new_votes,self.question_id)
                 self.save_data(update_sql)
 
-                # update question
+                # get question
                 question =self.get_by_key("questions","id",self.question_id)
                 return jsonify({"status": 201,
                         "data":question,
@@ -87,7 +101,7 @@ class Question(BaseModel):
 
         self.username=user
         self.question_id=question_id
-        self.vote =1
+        self.vote =-1
 
         user = self.get_by_key("users","username",self.username)
         check_question = self.check_if_exists("questions","id",self.question_id)
@@ -102,18 +116,26 @@ class Question(BaseModel):
             self.user_id = user[0]["id"]
             self.current_vote = question[0]["votes"]
             
-            vote = self.check_if_vote_exists(self.user_id,self.question_id)
-            # check if vote exists
-            if not vote:
+            vote = self.check_if_vote_exists(self.user_id,self.question_id,status="downvote")
+            # check if upvote exists then delete
+
+            if vote:
                 return jsonify({
                     "status": 401,
-                    "error": "user has not voted yet"
+                    "error": "user already downvoted the question"
                 }), 401
             else:
-               
-                vote_sql = """DELETE FROM votes WHERE user_id ='{}' AND question_id='{}';""".format(self.user_id,self.question_id)
+                # delete upvote record
+                vote_sql = """DELETE FROM votes WHERE user_id ='{}' AND question_id='{}' AND number=1;""".format(self.user_id,self.question_id)
                 self.delete_data(vote_sql)
+
+                # add downvote record
+                vote_sql = """ INSERT INTO votes (user_id,question_id,number)
+                    VALUES('{}','{}','{}') RETURNING votes.id;""".format(self.user_id,self.question_id,self.vote)
+                self.save_data(vote_sql)
                 vote = self.current_vote-1
+
+                # update question votes
                 update_sql= """UPDATE questions SET votes='{}'  WHERE id='{}' RETURNING questions.id;""".format(vote,self.question_id)
                 self.save_data(update_sql)
 
