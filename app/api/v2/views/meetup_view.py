@@ -13,7 +13,7 @@ validator = Validators()
 @meetup_v2.route("/upcoming/", methods=['GET'])
 def get_upcoming_meetups():
     ''' fetch all meetup records'''
-    upcoming_meetups =meetup_object.get_all("meetups")
+    upcoming_meetups =meetup_object.get_all("meetups",meetup=True)
     return jsonify({
         "status":200,
         "meetup":upcoming_meetups
@@ -66,14 +66,15 @@ def create_meetup(id):
         location = data.get('location')
         images = data.get('images')
         happening_on = data.get('happening_on')
+        body = data.get("body")
         tags = data.get('tags')
-        val_input = {"topic":topic,"location":location,"happening_on":happening_on,"tags":tags}
+        val_input = {"topic":topic,"location":location,"body":body,"happening_on":happening_on,"tags":tags}
 
         validate = validator._validate(val_input)
         if validate:
             return validate
         else:
-            meetup_details = {"topic":topic,"location":location,"images":images,"happening_on":happening_on,"tags":tags,"user_id":id}
+            meetup_details = {"topic":topic,"location":location,"images":images,"happening_on":happening_on,"body":body,"tags":tags,"user_id":id}
             meetup = meetup_object.create_meetup(**meetup_details)
             return meetup
 
