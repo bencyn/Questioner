@@ -16,7 +16,16 @@ class BaseModel:
         conn.connection.commit()
 
         return result
-    
+    def delete_data(self,sql):
+        """ defines global delet function"""
+        conn.cursor.execute(sql)
+        conn.connection.commit()
+
+        return True
+
+    def update_data(self,sql):
+        """ define global update function """
+        pass
   
     def check_if_exists(self, table, field, data):
         """ check if a record or records exist """
@@ -27,7 +36,16 @@ class BaseModel:
             return True
         else:
             return False
-    
+
+    def check_if_vote_exists(self,data,data2):
+        """ checks if a vote is present"""
+        query = "SELECT * FROM votes WHERE user_id='{}' AND question_id='{}'".format(data,data2)
+        conn.cursor.execute(query)
+        if conn.cursor.fetchone():
+            return True
+        else:
+            return False
+
     def get_user_by_username(self,username):
         """ get user by username """
         

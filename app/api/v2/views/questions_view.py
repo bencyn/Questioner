@@ -1,10 +1,14 @@
 from flask import Flask, json, jsonify, request, make_response, Blueprint
 from datetime import datetime
-import app
-from ..models import questions_model
+import app,re
+from ..models import questions_model,meetup_model,user_model
 from ....api.v2 import v2
+from app.api.utils.validators import Validators
 
+validator = Validators()
 question_object=questions_model.Question()
+meetup_object = meetup_model.Meetup()
+user_object = user_model.User()
 
 @v2.route("/meetups/<int:meetup_id>/questions", methods=['POST'])
 @app.jwt_required
@@ -16,54 +20,32 @@ def create_question(meetup_id):
     if not data:
         return jsonify({"Message": 'Cannot send empty data'}),409
     else:
-        title = request.get_json()['title']
-        body = request.get_json()['body']
-        
-        
+        title = data.get('title')
+        body = data.get('body')
+        current_user = app.get_jwt_identity()
         val_input = {"title":title,"body":body}
+    
+        validate = validator._validate(val_input)
+        if validate:
+            return validate
+        else:
+            question_details = {"title":title,"body":body,"meetup_id":meetup_id,"username":current_user}
+            question = question_object.create_question(**question_details)
+            return question
 
-        for key,value in val_input.items():
-            if not value.strip():
-                return make_response(jsonify({
-                    "status": 400,
-                    "error": "{} cannot be empty".format(key)
-                })), 400
-
-        question_object.add_question(meetup_id,title,body)
-
-        return jsonify({"status": 201,
-                        "data":[{"title": title,
-                                "user_id":len(question_object.questions)+1,
-                                "meetup": meetup_id,
-                                "body": body}]}), 201
 
 @v2.route("/questions/<int:question_id>/upvote", methods=['PATCH'])
 @app.jwt_required
 def upvote_question(question_id):
     """ question upvote endpoint logic """
-
-    question = question_object.get_question(question_id)
-    
-    if question:
-        upvote_question = question
-        upvote_question['votes'] = upvote_question['votes'] + 1
-        return jsonify({"status": 200, "data": upvote_question}), 200
-
-    return jsonify({"status": 404, "error": "Question not found"}), 404
-
+    current_user = app.get_jwt_identity()
+    return question_object.upvote_question(current_user,question_id)
+  
 
 @v2.route("/questions/<int:question_id>/downvote", methods=['PATCH'])
 @app.jwt_required
 def downvote_question(question_id):
     """ question downvote endpoint logic """
-   
-    question = question_object.get_question(question_id)
-    
-    if question:
-        downvote_question = question
-        downvote_question['votes'] = downvote_question['votes'] - 1
-        return jsonify({"status": 200, "data": downvote_question}), 200
-
-
-    return jsonify({"status": 404, "error": "Question not found"}), 404
-
+    current_user = app.get_jwt_identity()
+    return question_object.downvote_question(current_user,question_id)
+  

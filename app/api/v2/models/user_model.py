@@ -1,10 +1,8 @@
 from datetime import datetime
-# import psycopg2, os
-# from app.database.connect import db_init
 from flask import Flask, json, jsonify
 from .base_model import BaseModel
-
-
+from werkzeug.security import generate_password_hash, check_password_hash
+import app,re
 class User(BaseModel):
     """ user class """
 
@@ -44,7 +42,6 @@ class User(BaseModel):
             }), 400
         else:
             save_user=self.save_data(sql)
-            # fetch user
             user = self.get_by_key("users","id",save_user["id"])
 
             return jsonify({"status": 201,
@@ -54,15 +51,52 @@ class User(BaseModel):
                 }), 201
 
    
-    def login_user(self):
-        """"""
-        pass
-    # def get_user_by_id(self,id):
-    #     self.id =id
-    #     cur=conn.cursor()
-    #     query="""SELECT * FROM users WHERE id ={}""".format(self.id)
-    #     cur.execute(query)
-    #     self.user=cur.fetchall()
-    #     # curr.close()
-    
-    #     return self.user
+    def login_user(self,**kwargs):
+        """ validates user then login"""
+        self.username = kwargs['username']
+        self.password = kwargs['password']
+
+        user = self.get_by_key("users","username",self.username)
+        if user:
+            validate_password = check_password_hash(user[0]["password"], self.password)
+            if validate_password:
+                jwt_token = app.create_access_token(identity=self.username)
+                return jsonify({ 
+                    "status": 201,
+                    "data":[{"token":jwt_token,"user":user}],
+                    "message":"user logged in successfully",
+                }), 201
+            return jsonify({'msg': 'incorrect username/password combination' }), 401
+        else:
+            return jsonify({'msg': 'user does not exist' }), 404
+
+    def get_all_users(self):
+        """ get all users """
+
+        all_users = self.get_all("users")
+        key="users"
+        error = "No users registered"
+        return self.message_response(all_users,error,key)
+      
+
+    def get_user_by_id(self,id):
+        """ get a specific by users id"""
+
+        user =self.get_by_key("users","id",id)
+        key="user"
+        error = "User not found"
+        return self.message_response(user,error,key)
+      
+   
+    def message_response(self,value,error,key):
+        """return message if true or false"""
+        if value:
+            return jsonify({
+                "status":200,
+                "{}".format(key):value
+            }),200
+        else:
+            return jsonify({
+                "status":404,
+                "error":error
+            }),404

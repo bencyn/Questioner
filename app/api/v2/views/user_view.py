@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import app,re
 from app.api.v2.models import user_model
-from ..utils.validators import Validators
+from app.api.utils.validators import Validators
 
 user_v2 = Blueprint('user_v2', __name__, url_prefix='/api/v2/auth')
 auth_v2 = Blueprint('auth_v2',__name__, url_prefix='/api/v2/auths')
@@ -12,29 +12,17 @@ user_object = user_model.User()
 validator = Validators()
 
 @user_v2.route("/all", methods=['GET'])
-def getUsers():
+def get_all_users():
     ''' this endpoints allows a user to fetch all registered users'''
-    users = user_object.get_all("users")
-    return jsonify({
-        "status":200,
-        "users":users
-    }),200
+
+    return user_object.get_all_users()
+   
 
 @user_v2.route("/<int:id>", methods = ['GET'])
-def getUser(id):
+def get_user(id):
     ''' this endpoints allow a user to get a specific user by id'''
-    user =user_object.get_by_key("users","id",id)
-    if user:
-        return jsonify({
-            "status":200,
-            "user":user
-        }),200
-    else:
-        return jsonify({
-            "status":404,
-            "error":"User not found"
-        }),404
-   
+    return user_object.get_user_by_id(id)
+
 
 @user_v2.route('/signup', methods = ['POST'])
 def register():
@@ -44,23 +32,28 @@ def register():
     if not data:
         return jsonify({"Message": 'Cannot send empty data'}),409
     
-    firstname = request.get_json()['firstname']
-    lastname = request.get_json()['lastname']
-    othername = request.get_json()['othername']
-    email = request.get_json()['email']
-    phone_number = request.get_json()['phone_number']
-    password = request.get_json()['password']
-    username = request.get_json()['username']
-    is_admin = request.get_json()['is_admin']
+    firstname = data.get('firstname')
+    lastname = data.get('lastname')
+    othername = data.get('othername')
+    email = data.get('email')
+    phone_number = data.get('phone_number')
+    password = data.get('password')
+    username = data.get('username')
+    is_admin = data.get('is_admin')
+    confirm_password =data.get('confirm_password')
+
+    if password != confirm_password:
+        return jsonify({'msg': 'confirmation password and password do not match' }), 401
 
     val_input = {"firstname":firstname,"lastname":lastname,"username":username,
-        "email":email,"password":password}
+        "email":email,"password":password,"confirm_password":confirm_password}
    
     validate = validator._validate(val_input)
    
     if validate:
         return validate
     else:    
+
         passwordHash = generate_password_hash(password)
         access_token = app.create_access_token(identity=username)
         user_details ={"firstname":firstname,"lastname":lastname,"othername":othername,"email":email,
@@ -72,44 +65,26 @@ def register():
 @user_v2.route('/login', methods = ['POST'])
 def login():
     """ this endpoint allows a user to login and auto-generate an auth token """
-
+    data = request.get_json()
     if not request.data:
         return validator.validate_missing_data()
 
-    username = request.get_json()['username']
-    password = request.get_json()['password']
-    
-    val_input = {"username":username,"password":password}
+    username = data.get('username')
+    password = data.get('password')
 
+    val_input = {"username":username,"password":password}
     validate = validator._validate(val_input)
+    
    
     if validate:
         return validate
     else:
-        user = user_object.get_by_key("users","username",username)
-        
-        if user:
-            validate_password = check_password_hash(user[0]["password"], password)
-            if validate_password:
-                jwt_token = app.create_access_token(identity=username)
-                return jsonify({ 
-                    "status": 201,
-                    "data":[{
-                        "token":jwt_token,
-                        "user":user
-                    }],
-                    "message":"user logged in successfully",
-                }), 201
-            return jsonify({'msg': 'incorrect username/password combination' }), 401
-        else:
-            return jsonify({'msg': 'user does not exist' }), 404
-        
-
+        user_details= val_input
+        return user_object.login_user(**user_details)
+      
 @auth_v2.route('/token', methods=['GET'])
 @app.jwt_required
 def protected():
     """ access identity of the current user """
     current_user = app.get_jwt_identity()
     return jsonify(logged_in_as=current_user), 200
-
-

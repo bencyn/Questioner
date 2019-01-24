@@ -28,9 +28,8 @@ def tables():
 
     questions = """CREATE TABLE IF NOT EXISTS questions(
         id serial PRIMARY KEY NOT NULL,
-        meetup_id numeric NOT NULL,
-        user_id numeric NOT NULL,
-        created_by numeric NOT NULL,
+        meetup_id character varying(200) NOT NULL,
+        created_by character varying(200) NOT NULL,
         title character varying(200) NOT NULL,
         body text NOT NULL,
         votes integer DEFAULT 0,
@@ -39,13 +38,20 @@ def tables():
 
     rsvps = """CREATE TABLE IF NOT EXISTS rsvps(
         id serial PRIMARY KEY NOT NULL,
-        meetup_id numeric NOT NULL,
-        user_id numeric NOT NULL,
+        meetup_id character varying(200) NOT NULL,
+        user_id character varying(200) NOT NULL,
         response character varying(200) NOT NULL,
         created_on timestamp with time zone DEFAULT ('now'::text)::date NOT NULL
     );"""
 
-    tables =[users,meetups,questions,rsvps]
+    votes = """CREATE TABLE IF NOT EXISTS votes(
+        id serial PRIMARY KEY NOT NULL,
+        user_id character varying(200) NOT NULL,
+        question_id character varying(200) NOT NULL,
+        number integer DEFAULT 0
+    );"""
+
+    tables =[users,meetups,questions,rsvps,votes]
 
     return tables
 
@@ -56,7 +62,8 @@ def tables_to_drop():
     meetups = """ DROP TABLE IF EXISTS meetups CASCADE """
     questions = """ DROP TABLE IF EXISTS questions CASCADE """
     rsvps = """ DROP TABLE IF EXISTS rsvps CASCADE """
+    votes = """ DROP TABLE IF EXISTS votes CASCADE """
 
-    tables_to_drop =[users,meetups,questions,rsvps]
+    tables_to_drop =[users,meetups,questions,rsvps,votes]
 
     return tables_to_drop
