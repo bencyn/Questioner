@@ -48,10 +48,19 @@ def tables():
         id serial PRIMARY KEY NOT NULL,
         user_id character varying(200) NOT NULL,
         question_id character varying(200) NOT NULL,
-        number integer DEFAULT 0
+        number integer DEFAULT 0,
+        created_on timestamp with time zone DEFAULT ('now'::text)::date NOT NULL
     );"""
 
-    tables =[users,meetups,questions,rsvps,votes]
+    comments = """CREATE TABLE IF NOT EXISTS comments(
+        id serial PRIMARY KEY NOT NULL,
+        user_id character varying(200) NOT NULL,
+        question_id character varying(200) NOT NULL,
+        comment text NOT NULL,
+        created_on timestamp with time zone DEFAULT ('now'::text)::date NOT NULL
+    );"""
+
+    tables =[users,meetups,questions,rsvps,votes,comments]
 
     return tables
 
@@ -63,7 +72,8 @@ def tables_to_drop():
     questions = """ DROP TABLE IF EXISTS questions CASCADE """
     rsvps = """ DROP TABLE IF EXISTS rsvps CASCADE """
     votes = """ DROP TABLE IF EXISTS votes CASCADE """
+    comments = """ DROP TABLE IF EXISTS comments CASCADE """
 
-    tables_to_drop =[users,meetups,questions,rsvps,votes]
+    tables_to_drop =[users,meetups,questions,rsvps,votes,comments]
 
     return tables_to_drop
