@@ -1,15 +1,13 @@
 from datetime import datetime
 from flask import Flask, json, jsonify
 from .base_model import BaseModel
-import app,re
 
 class Question(BaseModel):
     """ questions class """
     def __init__(self):
         """initialize and define objects """
         super().__init__()
-        self.current_user = app.get_jwt_identity()
-
+      
     def create_question(self,**kwargs):
         """" defines the logic for adding a question """
 
@@ -43,9 +41,9 @@ class Question(BaseModel):
         ''' get question by key id '''
         pass
 
-    def upvote_question(self,question_id):
+    def upvote_question(self,user,question_id):
 
-        self.username=self.current_user
+        self.username=user
         self.question_id=question_id
         self.vote_count =1
 
@@ -85,9 +83,9 @@ class Question(BaseModel):
                         "message":"sucessfully upvoted question",
                 }), 201
 
-    def downvote_question(self,question_id):
+    def downvote_question(self,user,question_id):
 
-        self.username=self.current_user
+        self.username=user
         self.question_id=question_id
         self.vote =1
 
