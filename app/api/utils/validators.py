@@ -23,8 +23,14 @@ class Validators():
                 if not value.strip():
                     error ="{} cannot be empty".format(key)
                     return self.get_response(error)
+                if not re.match(r'^([a-z])',
+                                        value):
+                    error ="{} input contains invalid characters".format(key)
+                    return self.get_response(error)
+
                 if key == "email":
                     return self.validate_email(value)
+
             else:
                 error ="{} field required".format(key)
                 return jsonify({'status': 400,
