@@ -92,6 +92,10 @@ class BaseTest(unittest.TestCase):
                                 "user_id": 1,
                                 "votes": 0
                             }
+        self.comment={"comment":"Thanks for the recommedation"}
+        self.empty_comment={"comment":" "}
+        self.comment_none={}
+
         # meetup data
         self.meetup = {
             "topic": "Ethical Hacking Hackathon",
@@ -154,7 +158,7 @@ class BaseTest(unittest.TestCase):
         return self.post_meetup_url  
     
     def _post_question(self,data={}):
-        """ performs a questionpost request with test data"""
+        """ performs a question post request with test data"""
 
         # post a meetup
         url = self._meetup_post_url()
@@ -192,6 +196,23 @@ class BaseTest(unittest.TestCase):
         """ define vote url base on name """
         vote_url =self._question_get_url(id)+name
         return vote_url
+
+    def _post_comment(self,data={}):
+        """ performs a comment post request with test data"""
+    
+        question_result = json.loads(self._post_question().data.decode('utf-8'))
+        question_id = question_result["question"][0]["id"]
+
+        self.post_comment_url = 'api/v2/questions/{}/comments'.format(question_id)
+
+        if data:
+            self.post_comment = self.client.post(self.post_comment_url, data = json.dumps(data), 
+                                                                        content_type="application/json",headers=self._get_header())
+        else:
+            self.post_comment = self.client.post(self.post_comment_url, data = json.dumps(self.comment), 
+                                                                        content_type="application/json",headers=self._get_header())
+        return self.post_comment
+
 
     def tearDown(self):
         """teardown all the test data"""
