@@ -12,6 +12,7 @@ user_object = user_model.User()
 validator = Validators()
 
 @user_v2.route("/all", methods=['GET'])
+@app.jwt_required
 def get_all_users():
     ''' this endpoints allows a user to fetch all registered users'''
 
@@ -42,12 +43,13 @@ def register():
     is_admin = data.get('is_admin')
     confirm_password =data.get('confirm_password')
 
+    
+    val_input = {"phone_number":phone_number,"firstname":firstname,"lastname":lastname,"othername":othername,"username":username,"email":email,
+    "password":password,"confirm_password":confirm_password,}
+
     if password != confirm_password:
         return jsonify({'msg': 'confirmation password and password do not match' }), 401
 
-    val_input = {"firstname":firstname,"lastname":lastname,"username":username,
-        "email":email,"password":password,"confirm_password":confirm_password}
-   
     validate = validator._validate(val_input)
    
     if validate:
@@ -66,8 +68,8 @@ def register():
 def login():
     """ this endpoint allows a user to login and auto-generate an auth token """
     data = request.get_json()
-    if not request.data:
-        return validator.validate_missing_data()
+    # if not request.data:
+    #     return validator.validate_missing_data()
 
     username = data.get('username')
     password = data.get('password')
