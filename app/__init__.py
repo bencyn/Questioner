@@ -10,6 +10,7 @@ from instance.config import app_config
 from app.api.v2.views.meetup_view import meetup_v2
 from app.api.v2.views.user_view import user_v2,auth_v2
 from app.api.v2.views.questions_view import v2 as question_v2
+from app.api.v2.views.comments_view import v2 as comment_v2
 
 
 def create_app(config):
@@ -18,6 +19,7 @@ def create_app(config):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(app_config[config])
     app.register_blueprint(question_v2)
+    app.register_blueprint(comment_v2)
     app.register_blueprint(meetup_v2)
     app.register_blueprint(user_v2)
     app.register_blueprint(auth_v2)
