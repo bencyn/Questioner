@@ -19,7 +19,6 @@ class Comment(BaseModel):
         check_question = self.check_if_exists("questions","id",self.question_id)
         question =self.get_by_key("questions","id",self.question_id)
       
-
         if not check_question:
             return jsonify({
                 "status": 404,
