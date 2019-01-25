@@ -20,7 +20,8 @@ def tables():
         location character varying(50) NULL,
         images text NULL,
         topic character varying(200) NOT NULL,
-        tags text NULL,
+        body text NOT NULL,
+        tags text NOT NULL,
         user_id character varying(200) NOT NULL,
         created_on timestamp default current_timestamp
     );"""

@@ -40,13 +40,22 @@ def create_app(config):
             "status": 404,
             "message": str(message)
         })), 404
+        
+    @app.errorhandler(500)
+    def server_internal_error(message):
+        """ Handling internal server error """
+        return make_response(jsonify({
+            "status": 500,
+            "message": str(message)
+        })), 500
+
 
     @app.errorhandler(400)
     def bad_request(message):
         """ Handling resource not found """
 
         return make_response(jsonify({
-            "status": 404,
+            "status": 400,
             "message": str(message)
         })), 400
 
@@ -59,13 +68,7 @@ def create_app(config):
             "message": str(message)
         })), 405
 
-    @app.errorhandler(500)
-    def server_internal_error(message):
-        """ Handling internal server error """
-        return make_response(jsonify({
-            "status": 500,
-            "message": str(message)
-        })), 500
+    
 
     app.register_error_handler(404, resource_not_found)
     app.register_error_handler(405, method_not_allowed)

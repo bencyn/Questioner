@@ -45,9 +45,8 @@ class User(BaseModel):
             user = self.get_by_key("users","id",save_user["id"])
 
             return jsonify({"status": 201,
-                    "user":user,
                     "message":"user registered successfully",
-                    "token":kwargs['token']
+                    "username":user[0]["username"],
                 }), 201
 
    
@@ -63,7 +62,8 @@ class User(BaseModel):
                 jwt_token = app.create_access_token(identity=self.username)
                 return jsonify({ 
                     "status": 201,
-                    "data":[{"token":jwt_token,"user":user}],
+                    # "data":[{"token":jwt_token,"user":user}],
+                    "data":[{"token":jwt_token}],
                     "message":"user logged in successfully",
                 }), 201
             return jsonify({'msg': 'incorrect username/password combination' }), 401

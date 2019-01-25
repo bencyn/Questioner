@@ -10,6 +10,16 @@ question_object=questions_model.Question()
 meetup_object = meetup_model.Meetup()
 user_object = user_model.User()
 
+
+@v2.route("/questions/all", methods=['GET'])
+def get_all_questions():
+    ''' fetch all question records'''
+    questions =question_object.get_all("questions")
+    return jsonify({
+        "status":200,
+        "question":questions
+    }),200
+
 @v2.route("/meetups/<int:meetup_id>/questions", methods=['POST'])
 @app.jwt_required
 def create_question(meetup_id):

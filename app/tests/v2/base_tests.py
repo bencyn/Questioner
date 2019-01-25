@@ -1,6 +1,6 @@
 import json ,unittest,instance,datetime
 from app import create_app,conn
-
+import app
 class BaseTest(unittest.TestCase):
     '''main test configurations '''
 
@@ -42,6 +42,7 @@ class BaseTest(unittest.TestCase):
                 "topic":"Hackathon For The Brave",
                 "happening_on":"2019-12-01",
                 "tags":"UI,UX",
+                "body":"lorem ipsum",
                 "images":"https://bencyn.github.io/Questioner/UI/images/456471610.jpeg,https://bencyn.github.io/Questioner/UI/images/475058220.jpeg"
             
             },
@@ -50,6 +51,7 @@ class BaseTest(unittest.TestCase):
                 "topic":"Ethical Hacking Hackathon",
                 "happening_on":"2019-03-15",
                 "tags": "Pentests,Bruteforce",
+                "body": "lorem ipsum",
                 "images":"https://bencyn.github.io/Questioner/UI/images/456470.jpeg,https://bencyn.github.io/Questioner/UI/images/475058220.jpeg"
             
             }]
@@ -149,10 +151,13 @@ class BaseTest(unittest.TestCase):
 
     def _meetup_post_url(self):
         """define meetup post url"""
-        self.client.post(self.register_url, data = json.dumps(self.users[0]), content_type="application/json")
-        login_response = self.client.post(self.login_url, data = json.dumps(self.loging_data), content_type="application/json") 
-        login_result = json.loads(login_response.data.decode('utf-8'))
-        id = login_result["data"][0]["user"][0]["id"]
+        # self.client.post(self.register_url, data = json.dumps(self.users[0]), content_type="application/json")
+        # self.client.post(self.login_url, data = json.dumps(self.loging_data), content_type="application/json") 
+       
+        get_user_url= 'api/v2/auths/token/user'
+        response = self.client.get(get_user_url,content_type = "application/json",headers=self._get_header())
+        result = json.loads(response.data.decode('utf-8'))
+        id = result["user"][0]["id"]
         self.post_meetup_url='api/v2/auth/{}/meetups'.format(id)
 
         return self.post_meetup_url  
