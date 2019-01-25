@@ -16,7 +16,7 @@ This project is managed using a pivotal tracker board. [View the board here](htt
 [HEROKU API](https://bencyn-questioner.herokuapp.com/api/v1)
 
 <!-- [Github Pages](https://bencyn.github.io/Questioner/UI/)  -->
-[Documentation](https://documenter.getpostman.com/view/2456985/RzthRBe9)
+[Documentation](https://app.swaggerhub.com/apis/bencyn/questioner-api_v_2/2.0)
 
 Features
 -----------------------
