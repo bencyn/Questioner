@@ -34,20 +34,16 @@ class Validators():
                     return self.validate_email(value)
 
                 if key == "phone_number":
-                    if value[0] == '+':
-                        if not value[1:].isdigit(): 
-                            error ="phone number invalid"
-                            return self.get_response(error)
-                    elif value[0] == '0':
-                        if len(value) != 10:
-                            error ="phone number invalid"
-                            return self.get_response(error)
+                    if value[0] == '+' and not value[1:].isdigit():
+                        error ="phone number invalid"
+                        return self.get_response(error)
+                    elif value[0] == '0' and len(value) != 10:
+                        error ="phone number invalid"
+                        return self.get_response(error)    
                     
-                    elif value[0] != '0':
-                        if len(value) != 9:
-                            error ="phone number invalid"
-                            return self.get_response(error)
-
+                    elif value[0] != '0' and len(value) != 9:
+                        error ="phone number invalid"
+                        return self.get_response(error)
                             
             else:
                 error ="{} field required".format(key)
