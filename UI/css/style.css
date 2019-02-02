@@ -14,6 +14,7 @@ body {
     align-items: stretch;
 }
 
+
 header, main, footer {
     flex-shrink: 0;
 }
@@ -280,9 +281,8 @@ label {
     margin-bottom: 9px;
     font-size: 18px;
 }
-article .sub-container{
-    /*margin: 0 auto;*/
-    background: #f0f8ff9c;
+article .sub-container {
+    /* margin: 0 auto; */
     padding: 15px;
     border-radius: 5px;
 }
@@ -302,11 +302,73 @@ input , textarea{
 button, input {
     overflow: visible;
 }
-.login, .register{
+form p{
+    text-align: center;
+    /* margin-right: -30px; */
+}
+.form-control {
+    display: block;
+    width: 100%;
+    height: calc(2.25rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.btn-primary {
+    color: #fff !important;
+    background-color: #007bff !important;
+    border-color: #007bff !important;
+}
+.btn-success {
+    color: #fff !important;
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+}
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #212529;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.btn-block {
+    display: block;
+    width: 100%;
+}
+.login, .register {
     margin: 0 auto;
     margin-top: 50px;
     width: 250px;
     display: flex;
+    background: #fff;
+    padding: 30px 100px 30px 50px;
+    border-radius: 5px;
+    border: aliceblue;
+    border: solid #f8f9fa;
+}
+.login input{
+    width:130%;
+}
+.login button{
+    width:140%;
 }
 .meetup-create{
     margin: 0 auto;
@@ -342,6 +404,9 @@ button, input {
 
 .sub-container p{
    text-align: center;
+}
+.sub-container a{
+    text-decoration: none;
 }
 
 .submit{
