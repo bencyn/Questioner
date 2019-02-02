@@ -37,8 +37,7 @@ Pre-requisites
 ----------------------
 1. Python3
 2. Flask
-3. Flask restplus
-4. Postman
+3. Postman
 
 Getting started
 --------------------
@@ -113,13 +112,13 @@ When you run this application, you can test the following API endpoints using po
 |                                           |               |                         |                        | 
 |/api/v2/meetups/<id>                       |    GET        |  get specific meetup    | normal user            | 
 |                                           |               |                         |                        | 
-|/api/v2/meetups/<meetup-id>/questions      |    POST       |  post meetup question   | logged in normal user  | 
+|/api/v2/meetups/<meetup-id>questions       |    POST       |  post meetup question   | logged in normal user  | 
 |                                           |               |                         |                        | 
-|/api/v2/questions/<quetion-id>/downvote    |   PATCH       |  downvote a question    | logged in normal user  | 
+|/api/v2/questions/<quetion-id>downvote     |   PATCH       |  downvote a question    | logged in normal user  | 
 |                                           |               |                         |                        | 
-|/api/v2/questions/<question-id>/upvote     |   PATCH       |  upvote a question      | logged in normal user  | 
+|/api/v2/questions/<question-id>upvote      |   PATCH       |  upvote a question      | logged in normal user  | 
 |                                           |               |                         |                        | 
-|/api/v2/questions/<question-id>/comments   |   POST        |  post a comment         | logged in normal user  |
+|/api/v2/questions/<question-id>comments    |   POST        |  post a comment         | logged in normal user  |
 |                                           |               |                         |                        | 
 |/api/v2/questions/all                      |   GET         |  display all questions  |  norma user            | 
 
