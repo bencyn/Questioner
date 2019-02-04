@@ -52,6 +52,8 @@ function loginUser(e){
             localStorage.setItem('username',decode.identity.username)
             localStorage.setItem('is_admin',is_admin)
             
+            alert(response.message)
+            
             if(is_admin === "1"){
                 window.location.href = '../UI/admin.html'
             }else{
