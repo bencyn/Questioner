@@ -4,13 +4,7 @@
 Badges
 ------
 
-<<<<<<< HEAD
-[![Build Status](https://travis-ci.org/bencyn/Questioner.svg?branch=develop)](https://travis-ci.org/bencyn/Questioner)  
-[![Coverage Status](https://coveralls.io/repos/github/bencyn/Questioner/badge.svg?branch=develop)](https://coveralls.io/github/bencyn/Questioner?branch=develop)
-[![Maintainability](https://api.codeclimate.com/v1/badges/3ae0d2569165f3344e8e/maintainability)](https://codeclimate.com/github/bencyn/Questioner/maintainability)
-=======
 [![Build Status](https://travis-ci.org/bencyn/Questioner.svg?branch=develop)](https://travis-ci.org/bencyn/Questioner) [![Coverage Status](https://coveralls.io/repos/github/bencyn/Questioner/badge.svg?branch=develop)](https://coveralls.io/github/bencyn/Questioner?branch=develop) [![Maintainability](https://api.codeclimate.com/v1/badges/3ae0d2569165f3344e8e/maintainability)](https://codeclimate.com/github/bencyn/Questioner/maintainability)
->>>>>>> 07c990a63c35b88d9520d4de0df04cc5a341e964
 
 Overview
 --------
