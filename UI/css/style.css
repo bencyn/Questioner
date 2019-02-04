@@ -118,6 +118,7 @@ article div{
 .admin{
     /*display: flex;*/
 }
+
 .admin hr ,hr{
     width: 100%;
     margin: 15px 0;
@@ -267,7 +268,19 @@ article div{
     width: 657px;
     padding-right: 9px;
 }
-
+/* notifications styles */
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+.alert {
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
 
 /*form styles*/
 form{
@@ -356,7 +369,8 @@ form p{
 .login, .register {
     margin: 0 auto;
     margin-top: 50px;
-    width: 250px;
+    width: 300px;
+    width: 230px;
     display: flex;
     background: #fff;
     padding: 30px 100px 30px 50px;
@@ -364,11 +378,17 @@ form p{
     border: aliceblue;
     border: solid #f8f9fa;
 }
+.login .alert{
+    width: 109%;
+}
+.login #notification{
+    display:none;
+}
 .login input{
-    width:130%;
+    width: 115%;
 }
 .login button{
-    width:140%;
+    width:125%;
 }
 .meetup-create{
     margin: 0 auto;
