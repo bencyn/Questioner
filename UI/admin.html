@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <title>Questioner | Admin</title>
     <link href="css/style.css" rel="stylesheet">
+    <script>
+        token = localStorage.getItem("token");
+        is_admin =localStorage.getItem("is_admin");
+        console.log(is_admin);
+        if (!token) {
+          window.location.replace("http://localhost:8000/UI/login.html");
+        }
+        if (is_admin !=="1") {
+          window.location.replace("http://localhost:8000/UI/login.html");
+        }
+    </script>
 </head>
 <body>
 <div class="container">
@@ -16,7 +27,7 @@
             <a class="" href="index.html">Home</a>
             <a class="active" href="admin.html">Admin</a>
             <a  href="profile.html">Profile</a>
-            <a  href="index.html">Logout</a>
+            <a class="logout nav-link" href="logout.html">Logout</a>
             <!--<a href="register.html">Sign Up</a>-->
         </div>
     </header>
@@ -184,4 +195,5 @@
 </div>
 
 </body>
+<script src="js/admin.js" type="module"> </script>
 </html>
