@@ -59,10 +59,9 @@ class User(BaseModel):
         if user:
             validate_password = check_password_hash(user[0]["password"], self.password)
             if validate_password:
-                jwt_token = app.create_access_token(identity=self.username)
+                jwt_token = app.create_access_token(identity=user[0])
                 return jsonify({ 
                     "status": 201,
-                    # "data":[{"token":jwt_token,"user":user}],
                     "data":[{"token":jwt_token}],
                     "message":"user logged in successfully",
                 }), 201

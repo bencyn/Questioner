@@ -1,11 +1,11 @@
-from flask import Flask
+from flask import Flask, make_response, jsonify
+from flask_cors import CORS
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
     get_jwt_identity
 )
 from app.database.connect import Connection
 conn = Connection()
-from flask import Flask, make_response, jsonify
 from instance.config import app_config
 from app.api.v2.views.meetup_view import meetup_v2
 from app.api.v2.views.user_view import user_v2,auth_v2
@@ -17,6 +17,7 @@ def create_app(config):
     '''function creating the flask app'''
 
     app = Flask(__name__, instance_relative_config=True)
+    CORS(app)
     app.config.from_object(app_config[config])
     app.register_blueprint(question_v2)
     app.register_blueprint(comment_v2)

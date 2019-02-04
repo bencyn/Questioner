@@ -57,7 +57,8 @@ def register():
     else:    
 
         passwordHash = generate_password_hash(password)
-        access_token = app.create_access_token(identity=username)
+        data =[username,is_admin]
+        access_token = app.create_access_token(identity=data)
         user_details ={"firstname":firstname,"lastname":lastname,"othername":othername,"email":email,
                     "phone_number":phone_number,"username":username,"password":passwordHash,"is_admin":is_admin,"token":access_token}
         

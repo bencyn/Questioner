@@ -10,3 +10,8 @@ __pycache__
 **.pyc**
 .env
 test_database_con.py
+.1.env
+.coverage
+app/database/connect._name2.py
+app/database/connect.backup.py
+database_con.py

@@ -86,27 +86,31 @@ def create_meetup(id):
 #     """ this endpoint allows a user to submit a meetup reserve response """
 
 #     data = request.get_json()
-#     try:
-#         status = data.get('status')
-#     except KeyError:
-#         return jsonify({'status': 400,
-#                         ' error': "rsvps data required"})
 
-#     if not status.strip():
-#         return validate_input("rsvps status")
+#     status = data.get('status')
+#     val_input = {"status":status}
+
+#     validate = validator._validate(val_input)
+
+#     if validate:
+#         return validate
 #     else:
-#         meetups = meetup_object.meetups
-#         if meetups:
-#             rsvps_meetup = meetups[meetup_id]
-#             topic=rsvps_meetup["topic"]
+#         # 
+    # if not status.strip():
+    #     return validate_input("rsvps status")
+    # else:
+    #     meetups = meetup_object.meetups
+    #     if meetups:
+    #         rsvps_meetup = meetups[meetup_id]
+    #         topic=rsvps_meetup["topic"]
 
-#             return make_response(jsonify({
-#                 "status":201,
-#                 "data":{
-#                     "topic":topic,
-#                     "status":status,
-#                 }
-#             })), 201
+    #         return make_response(jsonify({
+    #             "status":201,
+    #             "data":{
+    #                 "topic":topic,
+    #                 "status":status,
+    #             }
+    #         })), 201
 
-#         return jsonify({"status": 404, "error": "Meetup not found"}), 404
+    #     return jsonify({"status": 404, "error": "Meetup not found"}), 404
   
