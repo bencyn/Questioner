@@ -4,29 +4,35 @@
     <meta charset="UTF-8">
     <title>Questioner | Admin</title>
     <link href="css/style.css" rel="stylesheet">
+    <script>
+        token = localStorage.getItem("token");
+        is_admin =localStorage.getItem("is_admin");
+        console.log(is_admin);
+        if (!token) {
+          window.location.replace("http://localhost:8000/UI/login.html");
+        }
+        if (is_admin !=="1") {
+          window.location.replace("http://localhost:8000/UI/login.html");
+        }
+    </script>
 </head>
 <body>
 <div class="container">
     <header>
         <a href="index.html" class="logo">
-            <h2><strong>Questioner</strong><small>crowd-source meetup questions</small></h2>
-            <!-- <p></p> -->
+            <h2><strong>Questioner</strong></h2>
         </a>
         <div class="navigation">
             <a class="" href="index.html">Home</a>
             <a class="active" href="admin.html">Admin</a>
             <a  href="profile.html">Profile</a>
-            <a  href="index.html">Logout</a>
-            <!--<a href="register.html">Sign Up</a>-->
+            <a class="logout nav-link" href="logout.html">Logout</a>
         </div>
     </header>
     <div class="main admin-page">
         <nav></nav>
         <article >
-            <!-- <div>
-                <h3>What is Questioner?</h3>
-                <p>Questioner is a questions crowd-source platform for meetups. The platform helps meetup organizer priotize questions to be answered.Other users can vote on asked questions.</p>
-            </div> -->
+           
             <div class="admin">
                 <h2 class="meetup-title">Meetups | Administrator</h3>
                     <hr/>
@@ -35,8 +41,6 @@
             </div>
             <div class="clearfix"></div>
             <div class="meetup-container">
-                 <!-- <div class="clearfix"></div> -->
-                <!-- <a href="#" class="m-btn">Meetups</a> -->
                 <div class="meetup-item">
                     <a href="">
                         <div class="m-img">
@@ -184,4 +188,5 @@
 </div>
 
 </body>
+<script src="js/admin.js" type="module"> </script>
 </html>

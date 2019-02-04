@@ -4,34 +4,39 @@
     <meta charset="UTF-8">
     <title>Questioner : Home</title>
     <link href="css/style.css" rel="stylesheet">
-    
+    <script>
+        token = localStorage.getItem("token");
+        is_admin =localStorage.getItem("is_admin");
+        console.log(is_admin);
+        // if (!token) {
+        //   window.location.replace("http://localhost:8000/UI/login.html");
+        // }
+        if (is_admin ==="1") {
+          window.location.replace("http://localhost:8000/UI/admin.html");
+        }
+    </script>
 </head>
 <body>
 <div class="container">
     <header>
         <a href="index.html" class="logo">
-            <h2><strong>Questioner</strong><small>crowd-source meetup questions</small></h2>
+            <h2><strong>Questioner</strong></h2>
             <!-- <p></p> -->
         </a>
         <div class="navigation">
             <a class="active" href="index.html">Home</a>
-            <a  href="login.html">Login</a>
+            <a class="nav-link" href="login.html">Login</a>
+           
             <!--<a href="register.html">Sign Up</a>-->
         </div>
     </header>
     <div class="main">
         <nav></nav>
         <article >
-            <!-- <div>
-                <h3>What is Questioner?</h3>
-                <p>Questioner is a questions crowd-source platform for meetups. The platform helps meetup organizer priotize questions to be answered.Other users can vote on asked questions.</p>
-            </div> -->
             <div>
                 <h2 class="meetup-title">Popular meetups nearby</h3>
             </div>
             <div class="meetup-container">
-                 <!-- <div class="clearfix"></div> -->
-                <!-- <a href="#" class="m-btn">Meetups</a> -->
                 <div class="meetup-item">
                     <a href="view-meetup.html">
                         <div class="m-img">
@@ -149,4 +154,5 @@
 </div>
 
 </body>
+<script src="js/index.js" type="module"> </script>
 </html>

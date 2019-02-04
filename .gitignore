@@ -1,0 +1,18 @@
+/venv
+.idea/
+/coverage/
+/node_modules/
+.vscode
+.pytest_cache/
+# **[__init__.pyc]*
+__init__.pyc
+__init__.pytest_cache
+__pycache__
+**.pyc**
+.env
+test_database_con.py
+jwt-decode
+package-lock.json
+database_con.py
+webpack.config.js
+.1.env
