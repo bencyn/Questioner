@@ -4,9 +4,13 @@
 Badges
 ------
 
+<<<<<<< HEAD
 [![Build Status](https://travis-ci.org/bencyn/Questioner.svg?branch=develop)](https://travis-ci.org/bencyn/Questioner)  
 [![Coverage Status](https://coveralls.io/repos/github/bencyn/Questioner/badge.svg?branch=develop)](https://coveralls.io/github/bencyn/Questioner?branch=develop)
 [![Maintainability](https://api.codeclimate.com/v1/badges/3ae0d2569165f3344e8e/maintainability)](https://codeclimate.com/github/bencyn/Questioner/maintainability)
+=======
+[![Build Status](https://travis-ci.org/bencyn/Questioner.svg?branch=develop)](https://travis-ci.org/bencyn/Questioner) [![Coverage Status](https://coveralls.io/repos/github/bencyn/Questioner/badge.svg?branch=develop)](https://coveralls.io/github/bencyn/Questioner?branch=develop) [![Maintainability](https://api.codeclimate.com/v1/badges/3ae0d2569165f3344e8e/maintainability)](https://codeclimate.com/github/bencyn/Questioner/maintainability)
+>>>>>>> 07c990a63c35b88d9520d4de0df04cc5a341e964
 
 Overview
 --------
@@ -18,7 +22,7 @@ This project is managed using a pivotal tracker board. [View the board here](htt
 [HEROKU API](https://bencyn-questioner.herokuapp.com/api/v1)
 
 <!-- [Github Pages](https://bencyn.github.io/Questioner/UI/)  -->
-[Documentation](https://documenter.getpostman.com/view/2456985/RzthRBe9)
+[Documentation](https://app.swaggerhub.com/apis/bencyn/questioner-api_v_2/2.0)
 
 Features
 -----------------------
@@ -39,8 +43,7 @@ Pre-requisites
 ----------------------
 1. Python3
 2. Flask
-3. Flask restplus
-4. Postman
+3. Postman
 
 Getting started
 --------------------
@@ -115,13 +118,13 @@ When you run this application, you can test the following API endpoints using po
 |                                           |               |                         |                        | 
 |/api/v2/meetups/<id>                       |    GET        |  get specific meetup    | normal user            | 
 |                                           |               |                         |                        | 
-|/api/v2/meetups/<meetup-id>/questions      |    POST       |  post meetup question   | logged in normal user  | 
+|/api/v2/meetups/<meetup-id>questions       |    POST       |  post meetup question   | logged in normal user  | 
 |                                           |               |                         |                        | 
-|/api/v2/questions/<quetion-id>/downvote    |   PATCH       |  downvote a question    | logged in normal user  | 
+|/api/v2/questions/<quetion-id>downvote     |   PATCH       |  downvote a question    | logged in normal user  | 
 |                                           |               |                         |                        | 
-|/api/v2/questions/<question-id>/upvote     |   PATCH       |  upvote a question      | logged in normal user  | 
+|/api/v2/questions/<question-id>upvote      |   PATCH       |  upvote a question      | logged in normal user  | 
 |                                           |               |                         |                        | 
-|/api/v2/questions/<question-id>/comments   |   POST        |  post a comment         | logged in normal user  |
+|/api/v2/questions/<question-id>comments    |   POST        |  post a comment         | logged in normal user  |
 |                                           |               |                         |                        | 
 |/api/v2/questions/all                      |   GET         |  display all questions  |  norma user            | 
 
