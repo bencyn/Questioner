@@ -65,9 +65,9 @@ class User(BaseModel):
                     "data":[{"token":jwt_token}],
                     "message":"user logged in successfully",
                 }), 201
-            return jsonify({'msg': 'incorrect username/password combination' }), 401
+            return jsonify({'error': 'incorrect username/password combination' }), 401
         else:
-            return jsonify({'msg': 'user does not exist' }), 404
+            return jsonify({'error': 'user does not exist' }), 404
 
     def get_all_users(self):
         """ get all users """

@@ -48,7 +48,7 @@ def register():
     "password":password,"confirm_password":confirm_password,}
 
     if password != confirm_password:
-        return jsonify({'msg': 'confirmation password and password do not match' }), 401
+        return jsonify({'error': 'passwords do not match' }), 401
 
     validate = validator._validate(val_input)
    
@@ -90,5 +90,6 @@ def login():
 def get_user_by_id():
     """ access identity of the current user """
     current_user = app.get_jwt_identity()
-    user =user_object.get_by_key("users","username",current_user)
+
+    user =user_object.get_by_key("users","username",str(current_user["username"]))
     return jsonify({"user":user}), 200

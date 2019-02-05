@@ -39,7 +39,7 @@ def create_question(meetup_id):
         if validate:
             return validate
         else:
-            question_details = {"title":title,"body":body,"meetup_id":meetup_id,"username":current_user}
+            question_details = {"title":title,"body":body,"meetup_id":meetup_id,"username":current_user["username"]}
             question = question_object.create_question(**question_details)
             return question
 
@@ -49,7 +49,7 @@ def create_question(meetup_id):
 def upvote_question(question_id):
     """ question upvote endpoint logic """
     current_user = app.get_jwt_identity()
-    return question_object.upvote_question(current_user,question_id)
+    return question_object.upvote_question(current_user["username"],question_id)
   
 
 @v2.route("/questions/<int:question_id>/downvote", methods=['PATCH'])
@@ -57,5 +57,5 @@ def upvote_question(question_id):
 def downvote_question(question_id):
     """ question downvote endpoint logic """
     current_user = app.get_jwt_identity()
-    return question_object.downvote_question(current_user,question_id)
+    return question_object.downvote_question(current_user["username"],question_id)
   

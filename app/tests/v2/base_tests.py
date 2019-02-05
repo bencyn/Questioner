@@ -170,6 +170,7 @@ class BaseTest(unittest.TestCase):
         meetup_response = self.client.post(url,data = json.dumps(self.meetups[0]), 
                                                     content_type="application/json",headers=self._get_header())
         meetup_result = json.loads(meetup_response.data.decode('utf-8'))
+        # print(meetup_result)
         meetup_id = meetup_result["data"][0]["id"]
         
         self.post_question_url ='api/v2/meetups/{}/questions'.format(meetup_id)

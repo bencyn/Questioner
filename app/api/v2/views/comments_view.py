@@ -23,6 +23,6 @@ def create_comment(question_id):
     if validate:
         return validate
     else:
-        comment_details = {"comment":comment,"username":current_user,"question_id":question_id}
+        comment_details = {"comment":comment,"username":current_user["username"],"question_id":question_id}
         comment = comment_object.create_comment(**comment_details)
         return comment
