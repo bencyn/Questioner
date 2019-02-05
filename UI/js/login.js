@@ -1,24 +1,25 @@
-import { serialize, base_url,parseJwt} from './helper.js';
+import { parseJwt} from './helper.js';
+import base from './base.js';
 
-let login_url = base_url + '/auth/login';
+let login_url = '/auth/login';
 var notification = document.getElementById('notification');
 
 window.onload = function () {
- 
-    // notification.style.display = 'none';
-
-   // get the button to submit the query 
     var form = document.getElementById("login-form")
-    //  add eventListener on the button
     form.addEventListener('submit', loginUser)
-    
+    let message = sessionStorage.getItem('success');
+
+    if(message){
+        notification.style.display='block';
+        notification.setAttribute('class','alert alert-success');
+        notification.innerHTML = `${message}`;
+        sessionStorage.clear();
+    }
 }
 
 function loginUser(e){
     e.preventDefault()
 
-    var form = document.querySelector('#login-form');
-    var formData = serialize(form);
     let username = document.getElementById('username').value;
     let password = document.getElementById('password').value;
 
@@ -30,14 +31,8 @@ function loginUser(e){
     submit.innerHTML = "Signing in...";
     submit.setAttribute("disabled", "disabled");
     console.log(data);
-
-    fetch(login_url, {
-        method: 'POST',
-        headers: {
-            "Content-type":"application/json",
-        },
-        body: JSON.stringify(data)
-    })
+    base
+    .post(login_url,data)
     .then(function(response){return response.json()})
 	.then(function(response){
         console.log(response)
@@ -63,13 +58,10 @@ function loginUser(e){
 		}
 		else{
             notification.style.display='block';
-            notification.innerHTML = `${response.msg}`;
+            notification.innerHTML = `${response.error}`;
             submit.innerHTML = "Sign In";
             submit.removeAttribute("disabled", "disabled");
-		// 	setTimeout(()=> {
-		// 		const message = "";
-		// 		notification.innerHTML = message;
-		// 	}, 3000)
+            
 		}
 
     })
