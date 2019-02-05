@@ -36,7 +36,7 @@ var parseJwt = (token) => {
 	}
   };
 
-let base_url = 'http://127.0.0.1:5000/api/v2';
+
 
 function logout(e){
 	e.preventDefault()
@@ -47,5 +47,5 @@ function logout(e){
 	}
 }
 export {
-	serialize,base_url,parseJwt,logout
+	serialize,parseJwt,logout
 }

@@ -9,10 +9,10 @@
         is_admin =localStorage.getItem("is_admin");
         console.log(is_admin);
         if (!token) {
-          window.location.replace("http://localhost:8000/UI/login.html");
+            window.location.href = '../UI/login.html';
         }
         if (is_admin !=="1") {
-          window.location.replace("http://localhost:8000/UI/login.html");
+            window.location.href = '../UI/login.html';
         }
     </script>
 </head>
