@@ -51,7 +51,6 @@ function append_logout(){
     }
 }
 
-
 function logout(e){
 	e.preventDefault()
 	var result = confirm("Are sure you want to logout?");
