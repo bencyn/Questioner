@@ -1,18 +1,20 @@
-import { parseJwt} from './helper.js';
+import { append_logout,logout} from './helper.js';
 import base from './base.js';
 
 var url = '/meetups/';
 // var notification = document.getElementById('notification');
 
 window.onload = function () {
-   let id = localStorage.getItem("meetup-id");
-   if(id){
-       let view_url=url+id;
-       viewMeetup(view_url);
-
-   }
-//    console.log(url);
-    
+    append_logout
+    var logout_link = document.querySelector('.logout');
+    if(logout_link){
+        logout_link.addEventListener('click', logout)
+    }
+    let id = localStorage.getItem("meetup-id");
+    if(id){
+        let view_url=url+id;
+        viewMeetup(view_url);
+    } 
 }
 
 function viewMeetup(url){
