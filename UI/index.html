@@ -31,12 +31,15 @@
         </div>
     </header>
     <div class="main">
+        
         <nav></nav>
         <article >
+            <!-- <div class="loader"></div> -->
             <div>
                 <h2 class="meetup-title">Popular meetups nearby</h3>
             </div>
-            <div class="meetup-container">
+           
+            <div class="meetup-container" id="meetups">
                 <div class="meetup-item">
                     <a href="view-meetup.html">
                         <div class="m-img">
@@ -48,9 +51,7 @@
                             <div class="m-content">
                                 <h4>Monthly Planning Meeting: Africa Open Data</h4>
                             </div>
-                            <!-- <hr/> -->
                             <div class="m-location"><strong>Venue:</strong> Nairobi</div>
-                            <!-- <span class="m-time">Tuesday, January 08, 5:00 PM</span> -->
                         </div>
                     </a>
                 </div>
@@ -65,9 +66,7 @@
                             <div class="m-content">
                                 <h4>Agile Leadership - Empowering people to work in new ways</h4>
                             </div>
-                            <!-- <hr/> -->
                             <div class="m-location"><strong>Venue:</strong> Nairobi</div>
-                            <!-- <span class="m-time">Tuesday, January 08, 5:00 PM</span> -->
                         </div>
                     </a>
                 </div>
@@ -149,10 +148,11 @@
 
         </aside>
     </div>
-    
-     <footer><p>© 2019 <strong>Questioner</strong> .All Rights Reserved.</p></footer>
+    <div class="clearfix"></div>
+    <footer><p>© 2019 <strong>Questioner</strong> .All Rights Reserved.</p></footer>
 </div>
 
 </body>
 <script src="js/index.js" type="module"> </script>
+<script src="js/meetups.js" type="module"> </script>
 </html>
