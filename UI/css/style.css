@@ -610,7 +610,8 @@ form p{
 }
 .post-question button{
     padding: 10px 50px;
-    background-color: #0095ff;
+    /* background-color: #0095ff; */
+    background-color: #28a745;
     border: none;
     border-radius: 0.25rem;
     cursor: pointer;
@@ -618,6 +619,9 @@ form p{
     margin-top: 10px;
     font-size: 15px;
     box-sizing: border-box;
+}
+.post-comment{
+    margin-top: -30px;
 }
 .post-comment .m-content {
    border:none;
