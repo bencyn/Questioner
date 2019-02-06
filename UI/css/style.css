@@ -402,6 +402,9 @@ form p{
 .login #notification , .register #notification{
     display:none;
 }
+#notification{
+    display:none;
+}
 #meetup-form #notification{
     display:none;
     width: 194%;
