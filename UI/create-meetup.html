@@ -10,42 +10,43 @@
 <div class="container">
     <header>
         <a href="index.html" class="logo">
-            <h2><strong>Questioner</strong><small>crowd-source meetup questions</small></h2>
+            <h2><strong>Questioner</strong></h2>
             <!-- <p></p> -->
         </a>
-         <div class="navigation">
+        <div class="navigation">
             <a class="" href="index.html">Home</a>
-            <a  href="admin.html">Admin</a>
-            <a  href="index.html">Logout</a>
-            <!--<a href="register.html">Sign Up</a>-->
+            <a class="active" href="admin.html">Admin</a>
+            <a  href="profile.html">Profile</a>
+            <a class="logout nav-link" href="logout.html">Logout</a>
         </div>
     </header>
     <div class="main">
         <nav></nav>
         <article >
-            <div>
-                <h2 class="meetup-title">Create a meetup</h3>
+            <div id="meetup-create">
+                <h2 class="meetup-title">Create a meetup</h2>
             </div>
              <div class="sub-container">
                 <div class="meetup-create">
-                    <form>
-                        <label for="username"><i class="fa fa-user"></i> Title</label>
-                        <input type="text" placeholder="enter meetup title" id="title" name="title" required>
+                   
+                    <form id="meetup-form">
+                        <div id="notification" class="alert alert-danger" role="alert"></div>
+                        <label for="username"><i class="fa fa-user"></i> Topic</label>
+                        <input type="text" class="form-control" placeholder="enter meetup title" id="title" name="title" required>
 
-                        <label for="email"><i class="fa fa-align-justify"></i> Description</label>
-                        <textarea rows="20" cols="10" name="description"></textarea>
-
-                        <label for="password"><i class="fas fa-calendar-day"></i> Date</label>
-                        <input type="date" placeholder="enter date" id="date" name="date" required>
-
+                        <label for="password"><i class="fas fa-calendar-day"></i> Date  <span><small><i>enter date in this format YYYY-MM-DD</i></small></span></label>
+                        <input type="date" class="form-control" placeholder="YYYY-MM-DD" id="date" name="date" required >
+                       
+                        <!-- <br/> -->
+                        <!-- <label></label> -->
                         <label for="password"><i class="fas fa-location-arrow"></i> Venue</label>
-                        <input type="text" placeholder="venue" id="venue" name="enter venue location" required>
-
-                        <label for="password"><i class="fa fa fa-file"></i> Upload Image</label>
-                        <input type="file"  name="file" required>
+                        <input type="text" class="form-control" placeholder="venue" id="venue" name="enter venue location" required>
+                
+                        <label for="email"><i class="fa fa-align-justify"></i> Description</label>
+                        <textarea rows="20" cols="10" name="body" id="body"></textarea>
 
                         <div class="form-btn">
-                             <button class="submit" type="submit">Save</button>
+                             <button class="btn btn-success btn-block" id="submit" type="submit">Save</button>
                         </div>
                        
                     </form>
@@ -61,6 +62,6 @@
     <div class="clearfix"></div>
     <footer><p>© 2019 <strong>Questioner</strong> .All Rights Reserved.</p></footer>
 </div>
-
+<script src="js/create-meetup.js" type="module"> </script>
 </body>
 </html>
