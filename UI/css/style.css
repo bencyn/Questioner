@@ -128,12 +128,16 @@ article div{
     border: none;
     border-bottom: 1px solid #d4d4d4;
 }
+#meetup-create .meetup-title{
+    margin-left: 145px;
+}
 .meetup-title{
     padding: 15px 0px 10px 5px;
     /*flex: 1;*/
     width: 100%;
     color: #009688;
     margin-bottom: 10px;
+   
 }
 .meetup-container{
     border-radius: 5px;
@@ -398,6 +402,11 @@ form p{
 .login #notification , .register #notification{
     display:none;
 }
+#meetup-form #notification{
+    display:none;
+    width: 194%;
+    text-align:center;
+}
 .login input{
     width: 115%;
 }
@@ -416,22 +425,25 @@ form p{
 }
 .meetup-create{
     margin: 0 auto;
-    margin-top: 50px;
+    /* margin-top: 50px; */
     width: 70%;
     display: flex;
 }
 .meetup-create input , .meetup-create textarea{
-    display: block;
-    width: 200%;
+    /* display: block;
+    width: 200%; */
     padding: .375rem .75rem;
-    font-size: 1rem;
-    line-height: 0.5;
+    /* font-size: 1rem; */
+    /* line-height: 0.5;
     color: #495057;
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid #ced4da;
     border-radius: .25rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1rem; */
+
+    width: 200%;
+    color: #495057;
 }
 .meetup-create button{
     width: fit-content;
