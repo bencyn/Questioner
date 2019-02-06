@@ -34,8 +34,22 @@ var parseJwt = (token) => {
 	} catch (e) {
 	  return null;
 	}
-  };
-
+};
+function append_logout(){
+    
+    let token = localStorage.getItem("token");
+    let username =localStorage.getItem("username");
+    console.log(token);
+    if (token) {
+        // alert("yes");
+        var el = document.querySelector('.nav-link');
+        el.removeAttribute('href','index.html');
+        el.setAttribute('href','logout.html');
+        el.setAttribute('class','logout nav-link');
+        el.innerHTML= 'Logout';
+      
+    }
+}
 
 
 function logout(e){
@@ -47,5 +61,5 @@ function logout(e){
 	}
 }
 export {
-	serialize,parseJwt,logout
+	serialize,parseJwt,append_logout,logout
 }
