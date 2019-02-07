@@ -1,4 +1,4 @@
-import { append_logout,logout} from './helper.js';
+import { append_logout,logout,notify} from './helper.js';
 import base from './base.js';
 
 var url = '/meetups/';
@@ -37,8 +37,14 @@ function viewMeetup(url){
             // console.log(data.questions)
             // document.getElementsByClassName('meetup-title')
             topic=meetup.topic
-          document.querySelector('.meetup-title').innerHTML=meetup.topic;
-            document.querySelector('.m-img').innerHTML=`<img src="${meetup.images}"/>`;
+            let image
+            if((meetup.id % 2) ==0){
+                image="http://www.lettersmarket.com/uploads/lettersmarket/demo/background_gradient_basic/background_gradient_blue_01/background_gradient_blue_01_jpg_max.jpg"
+            }else{
+                image="https://cdn.dribbble.com/users/1807056/screenshots/4666838/dribbble_404.png"
+            }
+            document.querySelector('.meetup-title').innerHTML=meetup.topic;
+            document.querySelector('.m-img').innerHTML=`<img src="${image}"/>`;
             document.querySelector('.m-time').innerHTML=`${meetup.happening_on}`;
             document.querySelector('.m-content').innerHTML=`<p>${meetup.body}</p>`;
             document.querySelector('.m-location').innerHTML=`<strong>Venue:</strong> ${meetup.location}`;
@@ -110,8 +116,7 @@ function upvoteQuestion(e){
             if(response.msg === "Token has expired"){
                 alert("session expired!!")
                 window.location.href = '../UI/login.html'
-            }
-            if (response.status === 201){
+            }else if (response.status === 201){
                 // alert(response.message)
                 console.log(response.data)
                 viewMeetup(view_url);
@@ -142,12 +147,10 @@ function downvoteQuestion(e){
             if(response.msg === "Token has expired"){
                 alert("session expired!!")
                 window.location.href = '../UI/login.html'
-            }
-            if (response.status === 201){
+            }else if (response.status === 201){
                 console.log(response.data)
                 viewMeetup(view_url);
-            }
-            else{
+            }else{
                 alert(response.error)
                 notify(response.error,status="error");
             }
@@ -251,22 +254,4 @@ function postQuestion(e){
         alert("You have to be logged in user in order to post a question")
     }
   
-}
-
-function notify(message,status){
-   
-    if(message){
-        notification.style.display='block';
-        if(status==="success"){
-            notification.setAttribute('class','alert alert-success');
-        }else{
-            notification.setAttribute('class','alert alert-danger');
-        }
-        notification.innerHTML = `${message}`;
-        setTimeout(()=> {
-            let message = "";
-            notification.innerHTML = message;
-            notification.style.display='none';
-        }, 4000)
-    }
 }
