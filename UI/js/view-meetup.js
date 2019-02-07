@@ -37,12 +37,8 @@ function viewMeetup(url){
             // console.log(data.questions)
             // document.getElementsByClassName('meetup-title')
             topic=meetup.topic
-            let image
-            if((meetup.id % 2) ==0){
-                image="http://www.lettersmarket.com/uploads/lettersmarket/demo/background_gradient_basic/background_gradient_blue_01/background_gradient_blue_01_jpg_max.jpg"
-            }else{
-                image="https://cdn.dribbble.com/users/1807056/screenshots/4666838/dribbble_404.png"
-            }
+            let image=localStorage.getItem("image");
+           
             document.querySelector('.meetup-title').innerHTML=meetup.topic;
             document.querySelector('.m-img').innerHTML=`<img src="${image}"/>`;
             document.querySelector('.m-time').innerHTML=`${meetup.happening_on}`;
