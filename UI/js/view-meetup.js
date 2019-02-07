@@ -3,7 +3,7 @@ import base from './base.js';
 
 var url = '/meetups/';
 var view_url
-// var notification = document.getElementById('notification');
+var notification = document.getElementById('notification');
 var question_url
 var topic;
 window.onload = function () {
@@ -18,8 +18,10 @@ window.onload = function () {
         question_url=view_url+'/questions'
         viewMeetup(view_url);
     } 
-    var form = document.getElementById("question-form")
-    form.addEventListener('submit', postQuestion)
+    var question_form = document.getElementById("question-form");
+    question_form.addEventListener('submit', postQuestion);
+
+   
 }
 
 function viewMeetup(url){
@@ -65,19 +67,20 @@ function viewMeetup(url){
                                         <span><a href=""><i class="fa fa-thumbs-down"></i> downvote <small>(1)</small></a></span>
                                     </div>
                                     <br>
+                                    <div id="notification" class="alert alert-danger" role="alert"></div>
                                     <div id="comment-${question.questions_id}">
                                     </div>
                                     <div class="question post-question post-comment">
                                         <div class="meetup-item">  
                                             <div class="m-detail">
                                                 <div class="m-content">
-                                                    <form>
-                                                    <textarea name="description" placeholder="Enter Comment..."></textarea>
-        
-                                                    <div class="form-btn">
-                                                            <button class="submit" type="submit">Post Comment</button>
-                                                    </div>
-                                                </form>
+                                                    <form data-id="comment-form">
+                                                        <textarea name="description" data-id="comment" placeholder="Enter Comment..." required></textarea>
+            
+                                                        <div class="form-btn">
+                                                            <button class="submit" data-id="submit" type="submit">Post Comment</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
@@ -93,6 +96,9 @@ function viewMeetup(url){
                     let question = questions[count]
                     // console.log(question)
                     getComments(question.questions_id)
+                    var comment_form =document.querySelector('[data-id="comment-form"]');
+                    comment_form.addEventListener('submit',function(e){postComment(e,question.questions_id)})
+                   
                 }
                 // append comments
             }
@@ -143,6 +149,8 @@ function getComments(id){
                     </div>`
                 }
                 document.getElementById('comment-'+id).innerHTML=result
+
+               
             }
         }
         // console.log(data)
@@ -191,6 +199,52 @@ function postQuestion(e){
             }
 
     
+        })
+    }else{
+        alert("You have to be logged in user in order to post a question")
+    }
+  
+}
+
+function postComment(e,id){
+    e.preventDefault();
+
+    var comment_url ='/questions/'+id+'/comments';
+   
+    const data = {
+        comment:document.querySelector('[data-id="comment"]').value
+    };
+    
+    var submit = document.querySelector('[data-id="submit"]')
+  
+    console.log(data);
+    let token = localStorage.getItem("token");
+    if(token){
+        submit.innerHTML = "Posting Comment....";
+        submit.setAttribute("disabled", "disabled");
+        base
+        .post(comment_url,data,token)
+        .then(function(response){return response.json()})
+        .then(function(response){
+            // console.log(response)
+            if(response.msg === "Token has expired"){
+                alert("session expired!!")
+                window.location.href = '../UI/login.html'
+            }else if (response.status === 201){
+                alert(response.message)
+                // sessionStorage.setItem('success',"question successfully posted!!")
+                // window.location.href = '../UI/admin.html'
+                viewMeetup(view_url);
+                notify(response.message);
+                document.querySelector('[data-id="comment-form"]').reset();
+                submit.innerHTML = "Post Comment";
+                submit.removeAttribute("disabled", "disabled");
+            }
+            else{
+                alert(response.error)
+                notification.style.display='block';
+                notification.innerHTML = `${response.error}`;
+            }
         })
     }else{
         alert("You have to be logged in user in order to post a question")
