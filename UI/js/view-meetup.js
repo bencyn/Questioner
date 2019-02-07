@@ -233,16 +233,14 @@ function postQuestion(e){
             if(response.msg === "Token has expired"){
                 alert("session expired!!")
                 window.location.href = '../UI/login.html'
-            }
-            if (response.status === 201){
+            }else if(response.status === 201){
                 alert(response.message)
                 viewMeetup(view_url);
                 notify(response.message,status="success");
                 document.getElementById("question-form").reset();
                 submit.innerHTML = "Post Question";
                 submit.removeAttribute("disabled", "disabled");
-            }
-            else{
+            }else{
                 alert(response.error)
                 notify(response.error,status="error");
                 submit.innerHTML = "Post Question";
