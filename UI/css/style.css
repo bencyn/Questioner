@@ -423,7 +423,7 @@ form p{
     width: 210%;
 }
 .meetup-details #notification{
-    margin-top: 50px;
+    /* margin-top: 50px; */
     text-align:center;
 }
 .meetup-create{
