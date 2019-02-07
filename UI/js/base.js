@@ -50,6 +50,7 @@ class Base{
     delete(endpoint, token) {
       return fetch(`${this.baseUrl}${endpoint}`, {
         method: "DELETE",
+        mode:"cors",
         headers: {
           Authorization: `Bearer ${token}`,
           "content-type": "application/json"
