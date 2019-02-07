@@ -106,35 +106,47 @@ function viewMeetup(url){
 }
 
 function getComments(id){
-    let url ='/questions/'+id;
-    base
-    .get(url)
+   
+    let baseUrl = "http://127.0.0.1:5000/api/v2";
+    let url =baseUrl+'/questions/'+id;
+    fetch(url, {
+        method: "GET",
+        headers: {
+          'content-type': 'application/json',
+          'Access-Control-Allow-Origin':'*',
+          'Access-Control-Request-Method': '*',
+        }
+      })
     .then(function(response){return response.json()})
     .then(data => {
-        // console.log(data)
-        if(data.status ===200){
-            // console.log(data.comments.length)
-            let result = ''
-            for(var count=0; count < data.comments.length; count++){
-                let comment = data.comments[count]
-                result +=
-                `<div class="question comment">
-                    <div class="meetup-item">  
-                        <div class="m-detail">
-                            <div class="m-time">
-                                <img src="images/comment-1.jpg" alt="Avatar">
-                                <span class="q-name">${comment.username}</span>
-                                <span class="q-time"></span>
-                            </div>
-                            <div class="m-content">
-                                <p>${comment.comment}</p>
+        let comments =data.comments
+        if(comments){
+            if(data.status ===200){
+                // console.log(data.comments.length)
+                let result = ''
+                for(var count=0; count < data.comments.length; count++){
+                    let comment = data.comments[count]
+                    result +=
+                    `<div class="question comment">
+                        <div class="meetup-item">  
+                            <div class="m-detail">
+                                <div class="m-time">
+                                    <img src="images/comment-1.jpg" alt="Avatar">
+                                    <span class="q-name">${comment.username}</span>
+                                    <span class="q-time"></span>
+                                </div>
+                                <div class="m-content">
+                                    <p>${comment.comment}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>`
+                    </div>`
+                }
+                document.getElementById('comment-'+id).innerHTML=result
             }
-            document.getElementById('comment-'+id).innerHTML=result
         }
+        // console.log(data)
+        
     })
 
 }
