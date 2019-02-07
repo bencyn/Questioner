@@ -1,17 +1,15 @@
-import { parseJwt} from './helper.js';
+import { parseJwt,notify} from './helper.js';
 import base from './base.js';
 
 let upcoming_url = '/meetups/upcoming/';
 var notification = document.getElementById('notification');
-
+var is_admin =localStorage.getItem("is_admin");
 window.onload = function () {
     upcomingMeetups()
     let message = sessionStorage.getItem('success');
 
     if(message){
-        notification.style.display='block';
-        notification.setAttribute('class','alert alert-success');
-        notification.innerHTML = `${message}`;
+        notify(message,status="success")
         sessionStorage.clear();
     }
 }
@@ -27,13 +25,18 @@ function upcomingMeetups(){
             for(var count=0; count < data.meetup.length; count++){
                 let meetup = data.meetup[count]
                 var image
-                let is_admin =localStorage.getItem("is_admin");
-                if(is_admin ===1){
+                console.log(meetup.id)
+                if((count % 2) ==0){
+                    image="https://s3.envato.com/files/188307997/1.jpg"
+                }else{
+                    image="https://cdn.dribbble.com/users/1807056/screenshots/4666838/dribbble_404.png"
+                }
+                if(is_admin === "1"){
                     result +=  
-                    `<div class="meetup-item" id=${meetup.id}>
-                        <a class="meetup-link" href="#">
+                    `<div class="meetup-item">
+                        <a class="meetup-link" id=${meetup.id} data-image=${image} href="#">
                             <div class="m-img">
-                                <img src="${meetup.images}">
+                                <img src="${image}">
                             </div>
                             <div class="m-detail">
                                 <div class="m-time">${meetup.happening_on}</div>
@@ -41,18 +44,18 @@ function upcomingMeetups(){
                                     <h4>${meetup.topic}</h4>
                                 </div>
                                 <div class="m-location"><strong>Venue:</strong>${meetup.location}</div>
-                                <div class="m-admin">
-                                    <a href="" class="m-admin-btn delete">Delete</a>
-                                </div>
                             </div>
                         </a>
+                        <div class="m-admin">
+                            <a href="" data-id="${meetup.id}" class="m-admin-btn delete">Delete</a>
+                        </div>
                     </div>`;
                 }else{
                     result +=  
-                    `<div class="meetup-item" id=${meetup.id}>
-                        <a class="meetup-link" href="#">
+                    `<div class="meetup-item">
+                        <a class="meetup-link" id=${meetup.id} href="#" data-image=${image}>
                             <div class="m-img">
-                                <img src="${meetup.images}">
+                                <img src="${image}">
                             </div>
                             <div class="m-detail">
                                 <div class="m-time">${meetup.happening_on}</div>
@@ -70,6 +73,9 @@ function upcomingMeetups(){
             for(var count=0; count < data.meetup.length; count++){
                 let meetup = data.meetup[count]
                 document.getElementById(meetup.id).addEventListener('click', viewMeetup);
+                if(is_admin === "1"){
+                    document.querySelector('[data-id="'+meetup.id+'"]').addEventListener('click', deleteMeetup)
+                }
             }
         }else{
             let el =document.querySelector('#meetups');
@@ -77,9 +83,44 @@ function upcomingMeetups(){
         }
     })
 }
+function deleteMeetup(e){
+    e.preventDefault();
 
+    let id =e.target.attributes.getNamedItem("data-id").value;
+    let url = '/meetups/'+id
+    let token = localStorage.getItem("token");
+    var result = confirm("Are sure you want to delete this record?");
+	if (result) {
+        if(token){
+            base
+            .delete(url,token)
+            .then(function(response){return response.json()})
+            .then(function(response){
+                // console.log(response)
+                if(response.msg === "Token has expired"){
+                    alert("session expired!!")
+                    window.location.href = '../UI/login.html'
+                }else if (response.status === 200){
+                    notify(response.message,status="success")
+                    upcomingMeetups()
+                }else{
+                    alert(response.error)
+                    notify(response.error,status="error");
+                    // hideNotification();
+                }
+            })
+        }else{
+            alert("You have to be logged in user in order to post a question")
+        }
+	}
+   
+}
 function viewMeetup(e){
     e.preventDefault();
+    // a.attributes.getNamedItem
+    let image =this.attributes.getNamedItem("data-image").value;
     localStorage.setItem('meetup-id',this.id);
+    localStorage.setItem('image',image);
     window.location.href = '../UI/view-meetup.html'
 }
+

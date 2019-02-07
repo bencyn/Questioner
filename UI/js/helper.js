@@ -59,6 +59,25 @@ function logout(e){
 			window.location.href = '../UI/index.html'
 	}
 }
+
+function notify(message,status){
+	var notification = document.getElementById('notification');
+
+    if(message){
+        notification.style.display='block';
+        if(status==="success"){
+            notification.setAttribute('class','alert alert-success');
+        }else{
+            notification.setAttribute('class','alert alert-danger');
+        }
+        notification.innerHTML = `${message}`;
+        setTimeout(()=> {
+            let message = "";
+            notification.innerHTML = message;
+            notification.style.display='none';
+        }, 4000)
+    }
+}
 export {
-	serialize,parseJwt,append_logout,logout
+	serialize,parseJwt,append_logout,logout,notify
 }
