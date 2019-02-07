@@ -43,6 +43,7 @@
             <div id="questions-title">
                 <h2 class="meetup-title text-black">Questions</h3>
             </div>
+            <div id="notification" class="alert alert-danger" role="alert"></div>
             <div id="questions">
                 
             </div>
@@ -53,11 +54,11 @@
                 <div class="meetup-item">  
                     <div class="m-detail">
                         <div class="m-content">
-                          <form>
-                            <textarea name="description" placeholder="Enter Question..."></textarea>
+                          <form id="question-form">
+                            <textarea name="description" id="body" placeholder="Enter Question..." required></textarea>
 
                             <div class="form-btn">
-                                 <button class="submit" type="submit">Post Question</button>
+                                 <button class="submit" id="submit" type="submit">Post Question</button>
                             </div>
                         </form>
                         </div>
