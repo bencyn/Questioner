@@ -34,7 +34,7 @@ function upcomingMeetups(){
                 if(is_admin === "1"){
                     result +=  
                     `<div class="meetup-item">
-                        <a class="meetup-link" id=${meetup.id} href="#">
+                        <a class="meetup-link" id=${meetup.id} data-image=${image} href="#">
                             <div class="m-img">
                                 <img src="${image}">
                             </div>
@@ -52,8 +52,8 @@ function upcomingMeetups(){
                     </div>`;
                 }else{
                     result +=  
-                    `<div class="meetup-item" id=${meetup.id}>
-                        <a class="meetup-link" href="#">
+                    `<div class="meetup-item">
+                        <a class="meetup-link" id=${meetup.id} href="#" data-image=${image}>
                             <div class="m-img">
                                 <img src="${image}">
                             </div>
@@ -85,6 +85,7 @@ function upcomingMeetups(){
 }
 function deleteMeetup(e){
     e.preventDefault();
+
     let id =e.target.attributes.getNamedItem("data-id").value;
     let url = '/meetups/'+id
     let token = localStorage.getItem("token");
@@ -116,7 +117,10 @@ function deleteMeetup(e){
 }
 function viewMeetup(e){
     e.preventDefault();
+    // a.attributes.getNamedItem
+    let image =this.attributes.getNamedItem("data-image").value;
     localStorage.setItem('meetup-id',this.id);
+    localStorage.setItem('image',image);
     window.location.href = '../UI/view-meetup.html'
 }
 
