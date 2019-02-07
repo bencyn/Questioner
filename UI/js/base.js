@@ -17,6 +17,7 @@ class Base{
     post(endpoint, data, token = null) {
       return fetch(`${this.baseUrl}${endpoint}`, {
         method: "POST",
+        mode:"cors",
         body: JSON.stringify(data),
         headers: {
           Authorization: `Bearer ${token}`,
@@ -29,6 +30,16 @@ class Base{
       return fetch(`${this.baseUrl}${endpoint}`, {
         method: "PUT",
         body: JSON.stringify(data),
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "content-type": "application/json"
+        }
+      });
+    }
+
+    patch(endpoint,token = null) {
+      return fetch(`${this.baseUrl}${endpoint}`, {
+        method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
           "content-type": "application/json"
