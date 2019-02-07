@@ -605,9 +605,15 @@ form p{
     overflow: hidden;
 }
 .q-reaction a{
-    text-decoration: none;
+    text-decoration: blink;
     margin-right: 10px;
     color: black;
+    color: #9e9e9e;
+}
+.q-reaction a:hover {
+    text-decoration: blink;
+    margin-right: 10px;
+    color: #439688;
 }
 .post-question textarea{
     margin-top: 25px;
