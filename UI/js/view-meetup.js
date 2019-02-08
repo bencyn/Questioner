@@ -1,4 +1,4 @@
-import { append_logout,logout,notify} from './helper.js';
+import { append_logout,logout,notify,avatar_image} from './helper.js';
 import base from './base.js';
 
 var url = '/meetups/';
@@ -32,7 +32,7 @@ function viewMeetup(url){
     .get(url)
     .then(function(response){return response.json()})
     .then(data => {
-        // console.log(data)
+        console.log(data)
         if(data.status ===200){
             let meetup = data.meetup[0]
             let questions =data.questions
@@ -60,35 +60,18 @@ function viewMeetup(url){
                         <div class="meetup-item">  
                             <div class="m-detail">
                                 <div class="m-time">
-                                    <img src="images/user-avatar.jpg" alt="Avatar">
+                                    <img src="${avatar_image}" alt="Avatar">
                                     <span class="q-name">${question.username}</span>
                                     <span class="q-time"></span>
                                 </div>
                                 <div class="m-content">
                                     <p>${question.body}</p>
                                     <div class="q-reaction">
-                                        <span><a class="upvote-${question.questions_id}" id="${question.questions_id}" href="s"><i class="fa fa-thumbs-up"></i> upvote <small>(${question.upvotes})</small></a></span>
+                                        <span><a class="upvote-${question.questions_id}" id="${question.questions_id}" href="#"><i class="fa fa-thumbs-up"></i> upvote <small>(${question.upvotes})</small></a></span>
                                         <span><a class="downvote-${question.questions_id}" id="${question.questions_id}" href=""><i class="fa fa-thumbs-down"></i> downvote <small>(${question.downvotes})</small></a></span>
-                                        <span><a href=""><i class="far fa-comment"></i> view comments</a></span>
+                                        <span><a class="comment-${question.questions_id}" id="${question.questions_id}" href="#"><i class="far fa-comment"></i> view comments</a></span>
                                     </div>
-                                    <br>
-                                    <div id="notification" class="alert alert-danger" role="alert"></div>
-                                    <div id="comment-${question.questions_id}">
-                                    </div>
-                                    <div class="question post-question post-comment">
-                                        <div class="meetup-item">  
-                                            <div class="m-detail">
-                                                <div class="m-content">
-                                                    <form data-id="comment-form">
-                                                        <textarea name="description" data-id="comment" placeholder="Enter Comment..." required></textarea>
-            
-                                                        <div class="form-btn">
-                                                            <button class="submit" data-id="submit" type="submit">Post Comment</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div id="comments">
                                     </div>
                                 </div>
                             </div>
@@ -101,14 +84,8 @@ function viewMeetup(url){
                     let question = questions[count]
                     document.querySelector('.upvote-'+question.questions_id).addEventListener('click',upvoteQuestion);
                     document.querySelector('.downvote-'+question.questions_id).addEventListener('click',downvoteQuestion);
-                    // console.log(question)
-                    getComments(question.questions_id)
-                    var comment_form =document.querySelector('[data-id="comment-form"]');
-                    comment_form.addEventListener('submit',function(e){postComment(e,question.questions_id)})
-                   
-                    // getComments(question.questions_id)
+                    document.querySelector('.comment-'+question.questions_id).addEventListener('click',viewComment);
                 }
-                // append comments
             }
         }else{
             // alert(data.error)
@@ -118,7 +95,12 @@ function viewMeetup(url){
 
     })
 }
-
+function viewComment(e){
+    e.preventDefault();
+    console.log(this.id)
+    localStorage.setItem('question-id',this.id);
+    window.location.href = '../UI/view-comment.html'
+}
 function upvoteQuestion(e){
     e.preventDefault();
     let url ='/questions/'+this.id+'/upvote';
@@ -177,53 +159,7 @@ function downvoteQuestion(e){
         alert("You have to be logged in user in order to post a question")
     }
 }
-function getComments(id){
-   
-    let baseUrl = "http://127.0.0.1:5000/api/v2";
-    let url =baseUrl+'/questions/'+id;
-    fetch(url, {
-        method: "GET",
-        headers: {
-          'content-type': 'application/json',
-          'Access-Control-Allow-Origin':'*',
-          'Access-Control-Request-Method': '*',
-        }
-      })
-    .then(function(response){return response.json()})
-    .then(data => {
-        let comments =data.comments
-        if(comments){
-            if(data.status ===200){
-                // console.log(data.comments.length)
-                let result = ''
-                for(var count=0; count < data.comments.length; count++){
-                    let comment = data.comments[count]
-                    result +=
-                    `<div class="question comment">
-                        <div class="meetup-item">  
-                            <div class="m-detail">
-                                <div class="m-time">
-                                    <img src="images/comment-1.jpg" alt="Avatar">
-                                    <span class="q-name">${comment.username}</span>
-                                    <span class="q-time"></span>
-                                </div>
-                                <div class="m-content">
-                                    <p>${comment.comment}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`
-                }
-                document.getElementById('comment-'+id).innerHTML=result
 
-               
-            }
-        }
-        // console.log(data)
-        
-    })
-
-}
 
 function postQuestion(e){
     e.preventDefault();
@@ -267,49 +203,4 @@ function postQuestion(e){
   
 }
 
-function postComment(e,id){
-    e.preventDefault();
-
-    var comment_url ='/questions/'+id+'/comments';
-   
-    const data = {
-        comment:document.querySelector('[data-id="comment"]').value
-    };
-    
-    var submit = document.querySelector('[data-id="submit"]')
-  
-    console.log(data);
-    let token = localStorage.getItem("token");
-    if(token){
-        submit.innerHTML = "Posting Comment....";
-        submit.setAttribute("disabled", "disabled");
-        base
-        .post(comment_url,data,token)
-        .then(function(response){return response.json()})
-        .then(function(response){
-            // console.log(response)
-            if(response.msg === "Token has expired"){
-                alert("session expired!!")
-                window.location.href = '../UI/login.html'
-            }else if (response.status === 201){
-                alert(response.message)
-                // sessionStorage.setItem('success',"question successfully posted!!")
-                // window.location.href = '../UI/admin.html'
-                viewMeetup(view_url);
-                notify(response.message,status="success");
-                document.querySelector('[data-id="comment-form"]').reset();
-                submit.innerHTML = "Post Comment";
-                submit.removeAttribute("disabled", "disabled");
-            }
-            else{
-                alert(response.error)
-                notification.style.display='block';
-                notification.innerHTML = `${response.error}`;
-            }
-        })
-    }else{
-        alert("You have to be logged in user in order to post a question")
-    }
-  
-}
 
