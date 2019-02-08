@@ -7,6 +7,7 @@ class Base{
     get(endpoint, token=null) {
       return fetch(`${this.baseUrl}${endpoint}`, {
         method: "GET",
+        mode: "cors", 
         headers: {
           Authorization: `Bearer ${token}`,
           "content-type": "application/json"
@@ -29,6 +30,7 @@ class Base{
     update(endpoint, token, data = null) {
       return fetch(`${this.baseUrl}${endpoint}`, {
         method: "PUT",
+        mode: "cors",  
         body: JSON.stringify(data),
         headers: {
           Authorization: `Bearer ${token}`,
@@ -40,6 +42,7 @@ class Base{
     patch(endpoint,token = null) {
       return fetch(`${this.baseUrl}${endpoint}`, {
         method: "PATCH",
+        mode: "cors",  
         headers: {
           Authorization: `Bearer ${token}`,
           "content-type": "application/json"
