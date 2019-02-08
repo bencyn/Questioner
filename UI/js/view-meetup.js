@@ -1,4 +1,4 @@
-import { append_logout,logout,notify} from './helper.js';
+import { append_logout,logout,notify,avatar_image} from './helper.js';
 import base from './base.js';
 
 var url = '/meetups/';
@@ -20,8 +20,10 @@ window.onload = function () {
         question_url=view_url+'/questions'
         viewMeetup(view_url);
     } 
-    var form = document.getElementById("question-form")
-    form.addEventListener('submit', postQuestion)
+    var question_form = document.getElementById("question-form");
+    question_form.addEventListener('submit', postQuestion);
+
+   
 }
 
 function viewMeetup(url){
@@ -30,7 +32,7 @@ function viewMeetup(url){
     .get(url)
     .then(function(response){return response.json()})
     .then(data => {
-        // console.log(data)
+        console.log(data)
         if(data.status ===200){
             let meetup = data.meetup[0]
             let questions =data.questions
@@ -58,19 +60,18 @@ function viewMeetup(url){
                         <div class="meetup-item">  
                             <div class="m-detail">
                                 <div class="m-time">
-                                    <img src="images/user-avatar.jpg" alt="Avatar">
+                                    <img src="${avatar_image}" alt="Avatar">
                                     <span class="q-name">${question.username}</span>
                                     <span class="q-time"></span>
                                 </div>
                                 <div class="m-content">
                                     <p>${question.body}</p>
                                     <div class="q-reaction">
-                                        <span><a class="upvote-${question.questions_id}" id="${question.questions_id}" href="s"><i class="fa fa-thumbs-up"></i> upvote <small>(${question.upvotes})</small></a></span>
+                                        <span><a class="upvote-${question.questions_id}" id="${question.questions_id}" href="#"><i class="fa fa-thumbs-up"></i> upvote <small>(${question.upvotes})</small></a></span>
                                         <span><a class="downvote-${question.questions_id}" id="${question.questions_id}" href=""><i class="fa fa-thumbs-down"></i> downvote <small>(${question.downvotes})</small></a></span>
-                                        <span><a href=""><i class="far fa-comment"></i> view comments</a></span>
+                                        <span><a class="comment-${question.questions_id}" id="${question.questions_id}" href="#"><i class="far fa-comment"></i> view comments</a></span>
                                     </div>
-                                    <br>
-                                    <div id="comment-${question.questions_id}">
+                                    <div id="comments">
                                     </div>
                                 </div>
                             </div>
@@ -83,10 +84,8 @@ function viewMeetup(url){
                     let question = questions[count]
                     document.querySelector('.upvote-'+question.questions_id).addEventListener('click',upvoteQuestion);
                     document.querySelector('.downvote-'+question.questions_id).addEventListener('click',downvoteQuestion);
-                    // console.log(question)
-                    // getComments(question.questions_id)
+                    document.querySelector('.comment-'+question.questions_id).addEventListener('click',viewComment);
                 }
-                // append comments
             }
         }else{
             // alert(data.error)
@@ -96,7 +95,12 @@ function viewMeetup(url){
 
     })
 }
-
+function viewComment(e){
+    e.preventDefault();
+    console.log(this.id)
+    localStorage.setItem('question-id',this.id);
+    window.location.href = '../UI/view-comment.html'
+}
 function upvoteQuestion(e){
     e.preventDefault();
     let url ='/questions/'+this.id+'/upvote';
@@ -157,59 +161,6 @@ function downvoteQuestion(e){
 }
 
 
-function hideNotification(){
-    setTimeout(()=> {
-        let message = "";
-        notification.innerHTML = message;
-        notification.style.display='none';
-    }, 4000)
-}
-function getComments(id){
-   
-    let baseUrl = "http://127.0.0.1:5000/api/v2";
-    let url =baseUrl+'/questions/'+id;
-    fetch(url, {
-        method: "GET",
-        headers: {
-          'content-type': 'application/json',
-          'Access-Control-Allow-Origin':'*',
-          'Access-Control-Request-Method': '*',
-        }
-      })
-    .then(function(response){return response.json()})
-    .then(data => {
-        let comments =data.comments
-        if(comments){
-            if(data.status ===200){
-                // console.log(data.comments.length)
-                let result = ''
-                for(var count=0; count < data.comments.length; count++){
-                    let comment = data.comments[count]
-                    result +=
-                    `<div class="question comment">
-                        <div class="meetup-item">  
-                            <div class="m-detail">
-                                <div class="m-time">
-                                    <img src="images/comment-1.jpg" alt="Avatar">
-                                    <span class="q-name">${comment.username}</span>
-                                    <span class="q-time"></span>
-                                </div>
-                                <div class="m-content">
-                                    <p>${comment.comment}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`
-                }
-                document.getElementById('comment-'+id).innerHTML=result
-            }
-        }
-        // console.log(data)
-        
-    })
-
-}
-
 function postQuestion(e){
     e.preventDefault();
     const data = {
@@ -251,3 +202,5 @@ function postQuestion(e){
     }
   
 }
+
+

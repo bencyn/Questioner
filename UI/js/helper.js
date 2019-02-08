@@ -78,6 +78,7 @@ function notify(message,status){
         }, 4000)
     }
 }
+var avatar_image ="https://www.chcf.org/wp-content/themes/chcf_theme/images/default-profile-pic.jpg"
 export {
-	serialize,parseJwt,append_logout,logout,notify
+	serialize,parseJwt,append_logout,logout,notify,avatar_image
 }
