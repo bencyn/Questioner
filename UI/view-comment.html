@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Questioner : View Meetup</title>
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <header>
+        <a href="index.html" class="logo">
+            <h2><strong>Questioner</strong></h2>
+        </a>
+         <div class="navigation">
+            <a class="" href="index.html">Home</a>
+            <a class="nav-link" href="login.html">Login</a>
+        </div>
+    </header>
+    <div class="main">
+        <nav></nav>
+        <article class="meetup-details">
+          
+            <div>
+                <h2 class="meetup-title">Q</h2>
+            </div>
+            <div id="notification" class="alert alert-success" role="alert" style="display: none;"></div>
+            <div id="questions">
+                <div class="question">
+                    <div class="meetup-item">  
+                        <div class="m-detail">
+                            <div class="m-time">
+                                <img src="images/user-avatar.jpg" alt="Avatar">
+                                <span class="q-name"></span>
+                                <span class="q-time"></span>
+                            </div>
+                            <div class="m-content">
+                                <p class="m-content-p">hello</p>
+                                <div class="q-reaction">
+                                    <span><a class="upvote-23" id="23" href="s"><i class="fa fa-thumbs-up"></i> upvote <small>(1)</small></a></span>
+                                    <span><a class="downvote-23" id="23" href=""><i class="fa fa-thumbs-down"></i> downvote <small>(0)</small></a></span>
+                                    <span><a href=""><i class="fa fa-question-circle"></i> view question(s)</a></span>
+                                </div>
+                                <br>
+                                <div id="notification" class="alert alert-danger" role="alert"></div>
+                                <div id="comments">
+                                    <div class="question comment">
+                                        <div class="meetup-item">  
+                                            <div class="m-detail">
+                                                <div class="m-time">
+                                                    <img src="images/comment-1.jpg" alt="Avatar">
+                                                    <span class="q-name">bencyn</span>
+                                                    <span class="q-time"></span>
+                                                </div>
+                                                <div class="m-content">
+                                                    <p>hello</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="question comment">
+                                        <div class="meetup-item">  
+                                            <div class="m-detail">
+                                                <div class="m-time">
+                                                    <img src="images/comment-1.jpg" alt="Avatar">
+                                                    <span class="q-name">bencyn</span>
+                                                    <span class="q-time"></span>
+                                                </div>
+                                                <div class="m-content">
+                                                    <p>hello</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="question comment">
+                                        <div class="meetup-item">  
+                                            <div class="m-detail">
+                                                <div class="m-time">
+                                                    <img src="images/comment-1.jpg" alt="Avatar">
+                                                    <span class="q-name">bencyn</span>
+                                                    <span class="q-time"></span>
+                                                </div>
+                                                <div class="m-content">
+                                                    <p>come on</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="question post-question post-comment">
+                                    <div class="meetup-item">  
+                                        <div class="m-detail">
+                                            <div class="m-content">
+                                                <form data-id="comment-form">
+                                                    <textarea name="description" data-id="comment" placeholder="Enter Comment..." required=""></textarea>
+        
+                                                    <div class="form-btn">
+                                                        <button class="submit" data-id="submit" type="submit">Post Comment</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </article>
+        <aside>
+
+        </aside>
+    </div>
+    
+     <footer><p>© 2019 <strong>Questioner</strong> .All Rights Reserved.</p></footer>
+</div>
+
+</body>
+<script src="js/view-comments.js" type="module"> </script>
+</html>
