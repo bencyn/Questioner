@@ -1,4 +1,4 @@
-import { logout,append_logout } from './helper.js';
+import { logout,append_logout,notify } from './helper.js';
 
 import base from './base.js';
 
@@ -30,25 +30,28 @@ function createMeetup(e){
     submit.setAttribute("disabled", "disabled");
     console.log(data);
     let token = localStorage.getItem("token");
-    base
-    .post(url,data,token)
-    .then(function(response){return response.json()})
-	.then(function(response){
-        console.log(response)
-		
-		if (response.status === 201){
-            alert(response.message)
-            sessionStorage.setItem('success',"meetup successfully created!!")
-            window.location.href = '../UI/admin.html'
-        
-		}
-		else{
-            // alert(response.error)
-            notification.style.display='block';
-            notification.innerHTML = `${response.error}`;
-            submit.innerHTML = "Save";
-            submit.removeAttribute("disabled", "disabled");
-		}
-
-    })
+    if(token){
+        base
+        .post(url,data,token)
+        .then(function(response){return response.json()})
+        .then(function(response){
+            console.log(response)
+            if(response.msg === "Token has expired"){
+                alert("session expired!!")
+                window.location.href = '../UI/login.html'
+            }else if (response.status === 201){
+                alert(response.message)
+                sessionStorage.setItem('success',"meetup successfully created!!")
+                window.location.href = '../UI/admin.html'
+            
+            }else{
+                
+                notify(response.error,status="error")
+                submit.innerHTML = "Save";
+                submit.removeAttribute("disabled", "disabled");
+            }
+    
+        })
+    }
+   
 }

@@ -1,9 +1,11 @@
-import { append_logout,logout} from './helper.js';
+import { append_logout,logout,notify} from './helper.js';
 import base from './base.js';
 
 var url = '/meetups/';
 var view_url
 var notification = document.getElementById('notification');
+var question_notification = document.getElementsByClassName('question-notification');
+console.log(question_notification)
 var question_url
 var topic;
 window.onload = function () {
@@ -37,8 +39,10 @@ function viewMeetup(url){
             // console.log(data.questions)
             // document.getElementsByClassName('meetup-title')
             topic=meetup.topic
-          document.querySelector('.meetup-title').innerHTML=meetup.topic;
-            document.querySelector('.m-img').innerHTML=`<img src="${meetup.images}"/>`;
+            let image=localStorage.getItem("image");
+           
+            document.querySelector('.meetup-title').innerHTML=meetup.topic;
+            document.querySelector('.m-img').innerHTML=`<img src="${image}"/>`;
             document.querySelector('.m-time').innerHTML=`${meetup.happening_on}`;
             document.querySelector('.m-content').innerHTML=`<p>${meetup.body}</p>`;
             document.querySelector('.m-location').innerHTML=`<strong>Venue:</strong> ${meetup.location}`;
@@ -63,8 +67,9 @@ function viewMeetup(url){
                                 <div class="m-content">
                                     <p>${question.body}</p>
                                     <div class="q-reaction">
-                                        <span><a href=""><i class="fa fa-thumbs-up"></i> upvote <small>(20)</small></a></span>
-                                        <span><a href=""><i class="fa fa-thumbs-down"></i> downvote <small>(1)</small></a></span>
+                                        <span><a class="upvote-${question.questions_id}" id="${question.questions_id}" href="s"><i class="fa fa-thumbs-up"></i> upvote <small>(${question.upvotes})</small></a></span>
+                                        <span><a class="downvote-${question.questions_id}" id="${question.questions_id}" href=""><i class="fa fa-thumbs-down"></i> downvote <small>(${question.downvotes})</small></a></span>
+                                        <span><a href=""><i class="far fa-comment"></i> view comments</a></span>
                                     </div>
                                     <br>
                                     <div id="notification" class="alert alert-danger" role="alert"></div>
@@ -94,11 +99,14 @@ function viewMeetup(url){
                 
                 for(var count=0; count < data.questions.length; count++){
                     let question = questions[count]
+                    document.querySelector('.upvote-'+question.questions_id).addEventListener('click',upvoteQuestion);
+                    document.querySelector('.downvote-'+question.questions_id).addEventListener('click',downvoteQuestion);
                     // console.log(question)
                     getComments(question.questions_id)
                     var comment_form =document.querySelector('[data-id="comment-form"]');
                     comment_form.addEventListener('submit',function(e){postComment(e,question.questions_id)})
                    
+                    // getComments(question.questions_id)
                 }
                 // append comments
             }
@@ -111,6 +119,64 @@ function viewMeetup(url){
     })
 }
 
+function upvoteQuestion(e){
+    e.preventDefault();
+    let url ='/questions/'+this.id+'/upvote';
+    console.log(url);
+    let token = localStorage.getItem("token");
+    if(token){
+        let data;
+        base
+        .patch(url,token)
+        .then(function(response){return response.json()})
+        .then(function(response){
+            // console.log(response)
+            if(response.msg === "Token has expired"){
+                alert("session expired!!")
+                window.location.href = '../UI/login.html'
+            }else if (response.status === 201){
+                // alert(response.message)
+                console.log(response.data)
+                viewMeetup(view_url);
+            }
+            else{
+                alert(response.error)
+                notify(response.error,status="error");
+                // hideNotification();
+            }
+        })
+    }else{
+        alert("You have to be logged in user in order to post a question")
+    }
+}
+
+function downvoteQuestion(e){
+    e.preventDefault();
+    let url ='/questions/'+this.id+'/downvote';
+    console.log(url);
+    let token = localStorage.getItem("token");
+    if(token){
+        let data;
+        base
+        .patch(url,token)
+        .then(function(response){return response.json()})
+        .then(function(response){
+            // console.log(response)
+            if(response.msg === "Token has expired"){
+                alert("session expired!!")
+                window.location.href = '../UI/login.html'
+            }else if (response.status === 201){
+                console.log(response.data)
+                viewMeetup(view_url);
+            }else{
+                alert(response.error)
+                notify(response.error,status="error");
+            }
+        })
+    }else{
+        alert("You have to be logged in user in order to post a question")
+    }
+}
 function getComments(id){
    
     let baseUrl = "http://127.0.0.1:5000/api/v2";
@@ -181,24 +247,19 @@ function postQuestion(e){
             if(response.msg === "Token has expired"){
                 alert("session expired!!")
                 window.location.href = '../UI/login.html'
-            }
-            if (response.status === 201){
+            }else if(response.status === 201){
                 alert(response.message)
-                // sessionStorage.setItem('success',"question successfully posted!!")
-                // window.location.href = '../UI/admin.html'
                 viewMeetup(view_url);
-                notify(response.message);
+                notify(response.message,status="success");
                 document.getElementById("question-form").reset();
                 submit.innerHTML = "Post Question";
                 submit.removeAttribute("disabled", "disabled");
-            }
-            else{
+            }else{
                 alert(response.error)
-                notification.style.display='block';
-                notification.innerHTML = `${response.error}`;
+                notify(response.error,status="error");
+                submit.innerHTML = "Post Question";
+                submit.removeAttribute("disabled", "disabled");
             }
-
-    
         })
     }else{
         alert("You have to be logged in user in order to post a question")
@@ -235,7 +296,7 @@ function postComment(e,id){
                 // sessionStorage.setItem('success',"question successfully posted!!")
                 // window.location.href = '../UI/admin.html'
                 viewMeetup(view_url);
-                notify(response.message);
+                notify(response.message,status="success");
                 document.querySelector('[data-id="comment-form"]').reset();
                 submit.innerHTML = "Post Comment";
                 submit.removeAttribute("disabled", "disabled");
@@ -252,13 +313,3 @@ function postComment(e,id){
   
 }
 
-function notify(message){
-    // let message = sessionStorage.getItem('success');
-
-    if(message){
-        notification.style.display='block';
-        notification.setAttribute('class','alert alert-success');
-        notification.innerHTML = `${message}`;
-        // sessionStorage.clear();
-    }
-}
