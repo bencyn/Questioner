@@ -48,7 +48,6 @@ class User(BaseModel):
                     "message":"user registered successfully",
                     "username":user[0]["username"],
                 }), 201
-
    
     def login_user(self,**kwargs):
         """ validates user then login"""
@@ -82,9 +81,23 @@ class User(BaseModel):
         """ get a specific by users id"""
 
         user =self.get_by_key("users","id",id)
+        feeds =''
+        questions_posted=''
+        questions_commented =''
+
         key="user"
         error = "User not found"
-        return self.message_response(user,error,key)
+        # return self.message_response(user,error,key)
+        if user:
+            return jsonify({
+                "status":200,
+                "{}".format(key):user
+            }),200
+        else:
+            return jsonify({
+                "status":404,
+                "error":error
+            }),404
       
    
     def message_response(self,value,error,key):
