@@ -34,6 +34,8 @@ def tables():
         title character varying(200) NOT NULL,
         body text NOT NULL,
         votes integer DEFAULT 0,
+        upvotes integer DEFAULT 0,
+        downvotes integer DEFAULT 0,
         created_on timestamp with time zone DEFAULT ('now'::text)::date NOT NULL
     );"""
 
@@ -50,6 +52,8 @@ def tables():
         user_id character varying(200) NOT NULL,
         question_id character varying(200) NOT NULL,
         number integer DEFAULT 0,
+        upvotes integer DEFAULT 0,
+        downvotes integer DEFAULT 0,
         created_on timestamp with time zone DEFAULT ('now'::text)::date NOT NULL
     );"""
 
