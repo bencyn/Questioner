@@ -23,10 +23,13 @@ def get_upcoming_meetups():
 def get_specific_meetup(id):
     ''' this function gets a  specific meetup by id'''
     meetup =meetup_object.get_by_key("meetups","id",id)
+    # questions=meetup_object.get_by_key("questions","meetup_id",id)
+    questions=meetup_object.get_with_user("questions","created_by","meetup_id",id)
     if meetup:
         return jsonify({
             "status":200,
-            "meetup":meetup
+            "meetup":meetup,
+            "questions":questions
         }),200
     else:
         return jsonify({
@@ -52,9 +55,9 @@ def delete_meetup(id):
             "error":"meetup record not found"
         }),404
 
-@user_v2.route('/<int:id>/meetups', methods = ['POST'])
+@user_v2.route('/meetups', methods = ['POST'])
 @app.jwt_required
-def create_meetup(id):
+def create_meetup():
     '''this endpoints allows users to create a meetup record '''
 
     data = request.get_json()
@@ -68,13 +71,18 @@ def create_meetup(id):
         happening_on = data.get('happening_on')
         body = data.get("body")
         tags = data.get('tags')
-        val_input = {"topic":topic,"location":location,"body":body,"happening_on":happening_on,"tags":tags}
+        current_user = app.get_jwt_identity()
+        # val_input = {"topic":topic,"location":location,"body":body,"happening_on":happening_on,"tags":tags}
+        val_input = {"topic":topic,"location":location,"body":body,"happening_on":happening_on}
 
         validate = validator._validate(val_input)
         if validate:
             return validate
         else:
-            meetup_details = {"topic":topic,"location":location,"images":images,"happening_on":happening_on,"body":body,"tags":tags,"user_id":id}
+            meetup_details = {"topic":topic,"location":location,"images":images,
+                                "happening_on":happening_on,"body":body,"tags":tags,
+                                "user_id":current_user["id"]
+                            }
             meetup = meetup_object.create_meetup(**meetup_details)
             return meetup
 
