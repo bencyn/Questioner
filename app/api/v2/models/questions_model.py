@@ -66,28 +66,35 @@ class Question(BaseModel):
             }), 404
         else:
             self.user_id = user[0]["id"]
-            self.current_vote = question[0]["votes"]
+            self.current_upvotes = question[0]["upvotes"]
             vote = self.check_if_vote_exists(self.user_id,self.question_id,status="upvote")
 
-            # check if downvote exists and delete
+            # check if upvote exists
+            downvote = self.check_if_vote_exists(self.user_id,self.question_id,status="downvote")
+
             if vote:
                 return jsonify({
                     "status": 401,
                     "error": "user already upvoted the question"
                 }), 401
             else:
-                # delete downvote
-                downvote_sql = """DELETE FROM votes WHERE user_id ='{}' AND question_id='{}' AND number=-1;""".format(self.user_id,self.question_id)
-                self.delete_data(downvote_sql)
+               
+                if downvote:
+                    value=question[0]["downvotes"]-1
+                    # delete downvote record and update questions table
+                    vote_sql = """DELETE FROM votes WHERE user_id ='{}' AND question_id='{}' AND downvotes=1;""".format(self.user_id,self.question_id)
+                    self.delete_data(vote_sql)
+                    update_sql= """UPDATE questions SET downvotes='{}'  WHERE id='{}' RETURNING questions.id;""".format(value,self.question_id)
+                    self.save_data(update_sql)
 
                 # add  upvote
-                vote_sql = """ INSERT INTO votes (user_id,question_id,number)
+                vote_sql = """ INSERT INTO votes (user_id,question_id,upvotes)
                     VALUES('{}','{}','{}') RETURNING votes.id;""".format(self.user_id,self.question_id,self.vote_count)
                 self.save_data(vote_sql)
-                new_votes = self.current_vote +1
+                new_votes = self.current_upvotes +1
                 
                 # update question vote
-                update_sql= """UPDATE questions SET votes='{}'  WHERE id='{}' RETURNING questions.id;""".format(new_votes,self.question_id)
+                update_sql= """UPDATE questions SET upvotes='{}'  WHERE id='{}' RETURNING questions.id;""".format(new_votes,self.question_id)
                 self.save_data(update_sql)
 
                 # get question
@@ -101,7 +108,7 @@ class Question(BaseModel):
 
         self.username=user
         self.question_id=question_id
-        self.vote =-1
+        self.vote =1
 
         user = self.get_by_key("users","username",self.username)
         check_question = self.check_if_exists("questions","id",self.question_id)
@@ -114,29 +121,33 @@ class Question(BaseModel):
             }), 404
         else:
             self.user_id = user[0]["id"]
-            self.current_vote = question[0]["votes"]
-            
+            self.current_vote = question[0]["downvotes"]
             vote = self.check_if_vote_exists(self.user_id,self.question_id,status="downvote")
-            # check if upvote exists then delete
-
+            # check if upvote exists
+            upvote = self.check_if_vote_exists(self.user_id,self.question_id,status="upvote")
             if vote:
                 return jsonify({
                     "status": 401,
                     "error": "user already downvoted the question"
                 }), 401
             else:
-                # delete upvote record
-                vote_sql = """DELETE FROM votes WHERE user_id ='{}' AND question_id='{}' AND number=1;""".format(self.user_id,self.question_id)
-                self.delete_data(vote_sql)
+                
+                if upvote:
+                    value=question[0]["upvotes"]-1
+                    # delete upvote record and update questions table
+                    vote_sql = """DELETE FROM votes WHERE user_id ='{}' AND question_id='{}' AND upvotes=1;""".format(self.user_id,self.question_id)
+                    self.delete_data(vote_sql)
+                    update_sql= """UPDATE questions SET upvotes='{}'  WHERE id='{}' RETURNING questions.id;""".format(value,self.question_id)
+                    self.save_data(update_sql)
 
                 # add downvote record
-                vote_sql = """ INSERT INTO votes (user_id,question_id,number)
+                vote_sql = """ INSERT INTO votes (user_id,question_id,downvotes)
                     VALUES('{}','{}','{}') RETURNING votes.id;""".format(self.user_id,self.question_id,self.vote)
                 self.save_data(vote_sql)
-                vote = self.current_vote-1
+                vote = self.current_vote+1
 
                 # update question votes
-                update_sql= """UPDATE questions SET votes='{}'  WHERE id='{}' RETURNING questions.id;""".format(vote,self.question_id)
+                update_sql= """UPDATE questions SET downvotes='{}'  WHERE id='{}' RETURNING questions.id;""".format(vote,self.question_id)
                 self.save_data(update_sql)
 
                 # update question
