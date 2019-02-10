@@ -72,6 +72,17 @@ class BaseModel:
             return True
         else:
             return False
+    
+    def check_if_rsvp_exists(self,table,**kwargs):
+        """ checks if record is present"""
+        query = "SELECT * FROM {} WHERE meetup_id='{}' AND user_id='{}'".format(table,kwargs["meetup_id"],
+                                    kwargs["user_id"])
+        conn.cursor.execute(query)
+        if conn.cursor.fetchone():
+            return True
+        else:
+            return False
+
 
 
     def get_user_by_username(self,username):
