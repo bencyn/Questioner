@@ -57,7 +57,34 @@ class Meetup(BaseModel):
         else:
             return jsonify({'msg': 'user does not exist' }), 404
 
-        
+    def reserve_meetup(self,**kwargs):
+        """ reserve a meetup""" 
+        self.status= kwargs['status']
+        self.meetup_id= kwargs['meetup_id']
+        self.user_id= kwargs['user_id']
+
+        meetup =self.check_if_exists("meetups","id",self.meetup_id)
+        if not meetup:  
+            return jsonify({
+                "status": 401,
+                "error": "meetup not found"
+            }), 401
+        else:
+            rsvp = self.check_if_rsvp_exists("rsvps",**kwargs)
+            if(rsvp):
+                sql="""UPDATE rsvps SET response='%s' WHERE meetup_id='%s' 
+                    AND user_id='%s' RETURNING rsvps.id;"""%(self.status,self.meetup_id,self.user_id) 
+            else:
+                sql= """INSERT INTO rsvps (meetup_id,user_id,response)
+                        VALUES('%s','%s','%s') RETURNING rsvps.id"""%(self.meetup_id,self.user_id,self.status)
+            save_response=self.save_data(sql)
+            response = self.get_by_key("rsvps","id",save_response["id"])
+
+            return jsonify({ 
+                "status": 201,
+                "data":response,
+                "message":"meetup successfully reserved as {}".format(self.status),
+            }), 201
    
     def login_user(self):
         """"""
