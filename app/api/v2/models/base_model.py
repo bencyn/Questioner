@@ -177,6 +177,20 @@ class BaseModel:
             message = {'message': '{}'.format(e)}
             return jsonify({"status": 400,"error":message}), 400
 
+    def user_profile(self,user_id,status):
+        """ get user profile statistics """
+        if (status =="feeds"):
+            # query = """SELECT *,{x}.id as {x}_id FROM %s RIGHT JOIN users ON users.id = CAST (%s AS INTEGER) WHERE %s='%s' ORDER BY {x}.id DESC;""".format(x=table)%(table,cast,field,value)
+            query=""" SELECT *,questions.id as questions_id FROM questions FULL OUTER JOIN users ON users.id = CAST (questions.created_by AS INTEGER) FULL OUTER JOIN meetups ON meetups.id=CAST (questions.meetup_id AS INTEGER)
+                    FULL OUTER JOIN rsvps ON  CAST (rsvps.meetup_id AS INTEGER)=meetups.id 
+                    WHERE rsvps.user_id='{}' ORDER BY questions.upvotes DESC LIMIT 5;""".format(user_id)
+        if(status=="posted"):
+            query="""SELECT COUNT(questions.id) FROM questions WHERE created_by='{}'""".format(user_id)
+        if(status=="commented"):
+            query="""SELECT COUNT(questions.id) FROM questions INNER JOIN comments ON CAST (comments.question_id AS INTEGER)=questions.id  WHERE comments.user_id='{}'""".format(user_id)
+
+        return self.execute_get_query(query)
+
     def delete_by_key(self,table,field,value):
         """ delete record by id"""
         query = "DELETE FROM {} WHERE {}={}".format(table,field,value)
@@ -188,6 +202,22 @@ class BaseModel:
             message = {'message': '{}'.format(e)}
             return jsonify({"status": 400,"error":message}), 400
    
+    def execute_get_query(self,query):
+        try:
+            conn.cursor.execute(query)
+            data= conn.cursor.fetchall() 
+            print(query) 
+            conn.connection.commit()
+            if not data:
+                return False
+            else:
+                result = []
+                for row in data:
+                    result.append(dict(row))
+                return result
+        except ValueError as e:
+            message = {'message': '{}'.format(e)}
+            return jsonify({"status": 400,"error":message}), 400
 
     def execute_query(self,query):
         conn.cursor.execute(query)
