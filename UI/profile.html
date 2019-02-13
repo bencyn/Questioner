@@ -10,13 +10,13 @@
 <div class="container">
     <header>
         <a href="index.html" class="logo">
-            <h2><strong>Questioner</strong><small>crowd-source meetup questions</small></h2>
+            <h2><strong>Questioner</strong></h2>
             <!-- <p></p> -->
         </a>
          <div class="navigation">
             <a class="" href="index.html">Home</a>
-            <a class="active" href="admin.html">Profile</a>
-            <a  href="index.html">Logout</a>
+            <a class="active profile" href="profile.html">Profile</a>
+            <a class="nav-link" href="login.html">Login</a>
             <!--<a href="register.html">Sign Up</a>-->
         </div>
     </header>
@@ -30,7 +30,7 @@
                 <div class="meetup-container">
                     <div class="meetup-item">
                         <div class="m-img">
-                            <img src="images/profile-avatar.png"/>
+                            <img src="https://www.chcf.org/wp-content/themes/chcf_theme/images/default-profile-pic.jpg"/>
                         </div>
                     </div>
                     <div class="meetup-item">            
@@ -38,9 +38,9 @@
                             <div class="m-time"> </div>
                            <div class="m-content m-location">
                                <table>
-                               		<tr><td class="t-title">Name</th><td>: Joyce Kamau</td></tr>
-                               		<tr><td class="t-title">Questions</th><td> : (45)</td></tr>
-                               		<tr><td class="t-title">Comments</th><td>  : (20)</td></tr>
+                               		<tr><td class="t-title">Name</th><td class="t-name"></td></tr>
+                               		<tr><td class="t-title">Questions</th><td class="t-questions"></td></tr>
+                               		<tr><td class="t-title">Comments</th><td class="t-comments">  : (20)</td></tr>
                                </table>
                             </div>
                         </div>
@@ -48,102 +48,20 @@
                 </div>
             </div>
 
-            <div>
+            <div id="questions-title">
                 <h2 class="meetup-title text-black">Top Question Feeds</h3>
-                <!-- <hr> -->
             </div>
-            <!-- questions list -->
-            <div class="question">
-                <div class="meetup-item">  
-                    <div class="m-detail">
-                        <div class="m-time">
-                            <img src="images/user-avatar.jpg" alt="Avatar">
-                            <span class="q-name">Benson Kihara</span>
-                            <span class="q-time">2 minutes ago</span>
-                        </div>
-                        <div class="m-content">
-                            <p>Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book. It </p>
-                            <div class="q-reaction">
-                                <span><a href=""><i class="fa fa-thumbs-up"></i> upvote <small>(20)</small></a></span>
-                                <span><a href=""><i class="fa fa-thumbs-down"></i> downvote <small>(1)</small></a></span>
-                            </div>
-                        </div>
-                        <!-- <hr/> -->
-                    </div>
-                </div>
-            </div>
-             <!-- questions list -->
-            <div class="question">
-                <div class="meetup-item">  
-                    <div class="m-detail">
-                        <div class="m-time">
-                            <img src="images/user-avatar.jpg" alt="Avatar">
-                            <span class="q-name">Benson Kihara</span>
-                            <span class="q-time">2 minutes ago</span>
-                        </div>
-                        <div class="m-content">
-                            <p>Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book. It </p>
-                            <div class="q-reaction">
-                                <span><a href=""><i class="fa fa-thumbs-up"></i> upvote <small>(18)</small></a></span>
-                                <span><a href=""><i class="fa fa-thumbs-down"></i> downvote <small>(1)</small></a></span>
-                            </div>
-                        </div>
-                        <!-- <hr/> -->
-                    </div>
-                </div>
-            </div>
-             <!-- questions list -->
-            <div class="question">
-                <div class="meetup-item">  
-                    <div class="m-detail">
-                        <div class="m-time">
-                            <img src="images/user-avatar.jpg" alt="Avatar">
-                            <span class="q-name">Benson Kihara</span>
-                            <span class="q-time">2 minutes ago</span>
-                        </div>
-                        <div class="m-content">
-                            <p>Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book. It </p>
-                            <div class="q-reaction">
-                                <span><a href=""><i class="fa fa-thumbs-up"></i> upvote <small>(15)</small></a></span>
-                                <span><a href=""><i class="fa fa-thumbs-down"></i> downvote <small>(1)</small></a></span>
-                            </div>
-                        </div>
-                        <!-- <hr/> -->
-                    </div>
-                </div>
-            </div>
-             <!-- questions list -->
-            <div class="question">
-                <div class="meetup-item">  
-                    <div class="m-detail">
-                        <div class="m-time">
-                            <img src="images/user-avatar.jpg" alt="Avatar">
-                            <span class="q-name">Benson Kihara</span>
-                            <span class="q-time">2 minutes ago</span>
-                        </div>
-                        <div class="m-content">
-                            <p>Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book. It </p>
-                            <div class="q-reaction">
-                                <span><a href=""><i class="fa fa-thumbs-up"></i> upvote <small>(20)</small></a></span>
-                                <span><a href=""><i class="fa fa-thumbs-down"></i> downvote <small>(1)</small></a></span>
-                            </div>
-                        </div>
-                        <!-- <hr/> -->
-                    </div>
-                </div>
-            </div>
+            <div id="notification" class="alert alert-danger" role="alert"></div>
+            <div id="questions">
 
-       
-
-
+            </div>
         </article>
         <aside>
 
         </aside>
     </div>
-    
-     <footer><p>© 2019 <strong>Questioner</strong> .All Rights Reserved.</p></footer>
+    <footer><p>© 2019 <strong>Questioner</strong> .All Rights Reserved.</p></footer>
 </div>
-
 </body>
+<script src="js/profile.js" type="module"> </script>
 </html>
