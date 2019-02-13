@@ -41,14 +41,17 @@ function loginUser(e){
             let token =response.data[0]["token"]
             let decode=parseJwt(token)
             let is_admin=decode.identity.is_admin
+            let id=decode.identity.id
 
             localStorage.setItem('token',token)
 		    localStorage.setItem('is_logged_in','true')
             localStorage.setItem('username',decode.identity.username)
             localStorage.setItem('is_admin',is_admin)
+            localStorage.setItem('user_id',id)
             
             alert(response.message)
             
+            console.log(decode)
             if(is_admin === "1"){
                 window.location.href = '../UI/admin.html'
             }else{
