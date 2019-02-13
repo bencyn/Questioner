@@ -14,7 +14,7 @@ class Validators():
         error = "{} cannot be empty".format(field)
         return self.get_response(error)
     
-
+  
     def _validate(self,input):
 
         """ validate empty strings and email fields"""
