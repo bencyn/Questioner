@@ -1,3 +1,4 @@
+import base from './base.js';
 var serialize = function (form) {
 
 	// Setup our serialized data
@@ -43,6 +44,8 @@ function append_logout(){
     if (token) {
         // alert("yes");
         var el = document.querySelector('.nav-link');
+		var prof = document.querySelector('.profile');
+		prof.style.display='block';
         el.removeAttribute('href','index.html');
         el.setAttribute('href','logout.html');
         el.setAttribute('class','logout nav-link');
@@ -79,6 +82,7 @@ function notify(message,status){
     }
 }
 var avatar_image ="https://www.chcf.org/wp-content/themes/chcf_theme/images/default-profile-pic.jpg"
+
 export {
 	serialize,parseJwt,append_logout,logout,notify,avatar_image
 }

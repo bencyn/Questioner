@@ -7,10 +7,7 @@
     <script>
         token = localStorage.getItem("token");
         is_admin =localStorage.getItem("is_admin");
-        console.log(is_admin);
-        // if (!token) {
-        //   window.location.replace("http://localhost:8000/UI/login.html");
-        // }
+
         if (is_admin ==="1") {
           window.location.replace("../UI/admin.html");
         }
@@ -25,6 +22,7 @@
         </a>
         <div class="navigation">
             <a class="active" href="index.html">Home</a>
+            <a class="profile" href="profile.html">Profile</a>
             <a class="nav-link" href="login.html">Login</a>
            
             <!--<a href="register.html">Sign Up</a>-->
@@ -40,106 +38,7 @@
             </div>
            
             <div class="meetup-container" id="meetups">
-                <div class="meetup-item">
-                    <a href="view-meetup.html">
-                        <div class="m-img">
-                            <img src="images/456471610.jpeg"/>
-                        </div>
-
-                        <div class="m-detail">
-                            <div class="m-time">Tuesday, January 08, 5:00 PM </div>
-                            <div class="m-content">
-                                <h4>Monthly Planning Meeting: Africa Open Data</h4>
-                            </div>
-                            <div class="m-location"><strong>Venue:</strong> Nairobi</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="meetup-item">
-                    <a href="view-meetup.html">
-                        <div class="m-img">
-                            <img src="images/475058220.jpeg"/>
-                        </div>
-
-                        <div class="m-detail">
-                            <div class="m-time">Wednesday, January 09, 6:00 PM </div>
-                            <div class="m-content">
-                                <h4>Agile Leadership - Empowering people to work in new ways</h4>
-                            </div>
-                            <div class="m-location"><strong>Venue:</strong> Nairobi</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="meetup-item">
-                    <a href="view-meetup.html">
-                        <div class="m-img">
-                            <img src="images/473375978.png"/>
-                        </div>
-
-                        <div class="m-detail">
-                            <div class="m-time">Friday, January 08, 5:00 PM </div>
-                            <div class="m-content">
-                                <h4>GDG Cloud Nairobi</h4>
-                            </div>
-                            <!-- <hr/> -->
-                            <div class="m-location"><strong>Venue:</strong> Nairobi</div>
-                            <!-- <span class="m-time">Tuesday, January 08, 5:00 PM</span> -->
-                        </div>
-                    </a>
-                </div>
-
-                <div class="meetup-item">
-                    <a href="view-meetup.html">
-                        <div class="m-img">
-                            <img src="images/441871210.png"/>
-                        </div>
-
-                        <div class="m-detail">
-                            <div class="m-time">Wednesday, March 10, 6:00 PM </div>
-                            <div class="m-content">
-                                <h4>Nairobi Javascript Community</h4>
-                            </div>
-                            <!-- <hr/> -->
-                            <div class="m-location"><strong>Venue:</strong> Jkuat</div>
-                            <!-- <span class="m-time">Tuesday, January 08, 5:00 PM</span> -->
-                        </div>
-                    </a>
-                </div>
-                <div class="meetup-item">
-                    <a href="view-meetup.html">
-                        <div class="m-img">
-                            <img src="images/466235343.jpg"/>
-                        </div>
-
-                        <div class="m-detail">
-                            <div class="m-time">Tuesday, April 02, 5:00 PM </div>
-                            <div class="m-content">
-                                <h4>Nairobi Spring Framework Meetup</h4>
-                            </div>
-                            <!-- <hr/> -->
-                            <div class="m-location"><strong>Venue:</strong> Nairobi</div>
-                            <!-- <span class="m-time">Tuesday, January 08, 5:00 PM</span> -->
-                        </div>
-                    </a>
-                </div>
-                <div class="meetup-item">
-                    <a href="view-meetup.html">
-                        <div class="m-img">
-                            <img src="images/473240656.png"/>
-                        </div>
-
-                        <div class="m-detail">
-                            <div class="m-time">Tuesday, April 02, 8:00 PM </div>
-                            <div class="m-content">
-                                <h4>#defyhatenow South Sudan Diaspora Social Media Peacebuilders</h4>
-                            </div>
-                            <!-- <hr/> -->
-                            <div class="m-location"><strong>Venue:</strong> Juba</div>
-                            <!-- <span class="m-time">Tuesday, January 08, 5:00 PM</span> -->
-                        </div>
-                    </a>
-                </div>
-        
+      
             </div>
 
 

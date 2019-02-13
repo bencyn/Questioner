@@ -1,32 +1,31 @@
-import { append_logout,logout,notify,avatar_image} from './helper.js';
+import { append_logout,logout,notify,parseJwt,avatar_image} from './helper.js';
 import base from './base.js';
 
-var url = '/meetups/';
-var view_url
-var notification = document.getElementById('notification');
-var question_notification = document.getElementsByClassName('question-notification');
-console.log(question_notification)
-var question_url
-var topic;
+var profile_url
+var identity
+var name
 window.onload = function () {
     append_logout()
     var logout_link = document.querySelector('.logout');
     if(logout_link){
         logout_link.addEventListener('click', logout)
     }
-    let id = localStorage.getItem("meetup-id");
+    var token = localStorage.getItem("token");
+    var decode=parseJwt(token)
+    console.log(decode)
+    identity=decode.identity
+    
+    let id =decode.identity.id
+    name=identity.firstname+' '+identity.othername+' '+identity.lastname
+    console.log(id)
     if(id){
-        view_url=url+id;
-        question_url=view_url+'/questions'
-        viewMeetup(view_url);
-    } 
-    var question_form = document.getElementById("question-form");
-    question_form.addEventListener('submit', postQuestion);
-
+        profile_url='/auth/'+id
+        viewProfile(profile_url)
+    }
    
 }
 
-function viewMeetup(url){
+function viewProfile(url){
    
     base
     .get(url)
@@ -34,24 +33,23 @@ function viewMeetup(url){
     .then(data => {
         console.log(data)
         if(data.status ===200){
-            let meetup = data.meetup[0]
-            let questions =data.questions
-            // console.log(data.questions)
-            // document.getElementsByClassName('meetup-title')
-            topic=meetup.topic
-            let image=localStorage.getItem("image");
+            let questions_commented=data.questions_commented[0].count
+            let questions_posted=data.questions_posted[0].count
+            let questions= data.feeds
+            // let meetup = data.meetup[0]
+            // let questions =data.questions
+            // topic=meetup.topic
+            // let image=localStorage.getItem("image");
            
-            document.querySelector('.meetup-title').innerHTML=meetup.topic;
-            document.querySelector('.m-img').innerHTML=`<img src="${image}"/>`;
-            document.querySelector('.m-time').innerHTML=`${meetup.happening_on}`;
-            document.querySelector('.m-content').innerHTML=`<p>${meetup.body}</p>`;
-            document.querySelector('.m-location').innerHTML=`<strong>Venue:</strong> ${meetup.location}`;
+            document.querySelector('.t-name').innerHTML=`: ${name} `;
+            document.querySelector('.t-questions').innerHTML=`: (${questions_posted})`;
+            document.querySelector('.t-comments').innerHTML=`: (${questions_commented})`;
             if(questions){
                 document.querySelector('#questions-title').style.display="block"
                 var i = 0;
                 let result = ''
-                // console.log(questions)
-                for(var count=0; count < data.questions.length; count++){
+                console.log(questions)
+                for(var count=0; count < questions.length; count++){
                     let question = questions[count]
                     console.log(question)
                     // getComments(question.id)
@@ -80,13 +78,14 @@ function viewMeetup(url){
                 }
                 document.getElementById('questions').innerHTML=result
                 
-                for(var count=0; count < data.questions.length; count++){
+                for(var count=0; count < questions.length; count++){
                     let question = questions[count]
-                    document.querySelector('.upvote-'+question.questions_id).addEventListener('click',upvoteQuestion);
-                    document.querySelector('.downvote-'+question.questions_id).addEventListener('click',downvoteQuestion);
+                    document.querySelector('.upvote-'+question.questions_id).addEventListener('click',upvote);
+                    document.querySelector('.downvote-'+question.questions_id).addEventListener('click',downvote);
                     document.querySelector('.comment-'+question.questions_id).addEventListener('click',viewComment);
                 }
             }
+        
         }else{
             // alert(data.error)
             let el =document.querySelector('.meetup-details');
@@ -95,13 +94,14 @@ function viewMeetup(url){
 
     })
 }
+
 function viewComment(e){
     e.preventDefault();
     console.log(this.id)
     localStorage.setItem('question-id',this.id);
     window.location.href = '../UI/view-comment.html'
 }
-function upvoteQuestion(e){
+function upvote(e){
     e.preventDefault();
     let url ='/questions/'+this.id+'/upvote';
     console.log(url);
@@ -119,7 +119,7 @@ function upvoteQuestion(e){
             }else if (response.status === 201){
                 // alert(response.message)
                 console.log(response.data)
-                viewMeetup(view_url);
+                viewProfile(profile_url)
             }else{
                 alert(response.error)
                 notify(response.error,status="error");
@@ -131,7 +131,7 @@ function upvoteQuestion(e){
     }
 }
 
-function downvoteQuestion(e){
+function downvote(e){
     e.preventDefault();
     let url ='/questions/'+this.id+'/downvote';
     console.log(url);
@@ -148,7 +148,7 @@ function downvoteQuestion(e){
                 window.location.href = '../UI/login.html'
             }else if (response.status === 201){
                 console.log(response.data)
-                viewMeetup(view_url);
+                viewProfile(profile_url)
             }else{
                 alert(response.error)
                 notify(response.error,status="error");
@@ -159,46 +159,5 @@ function downvoteQuestion(e){
     }
 }
 
-function postQuestion(e){
-    e.preventDefault();
-    const data = {
-        title:document.querySelector('.meetup-title').innerHTML,
-        body:document.getElementById('body').value,
-    };
-    
-    var submit = document.getElementById("submit")
-  
-    console.log(data);
-    let token = localStorage.getItem("token");
-    if(token){
-        submit.innerHTML = "Posting Question....";
-        submit.setAttribute("disabled", "disabled");
-        base
-        .post(question_url,data,token)
-        .then(function(response){return response.json()})
-        .then(function(response){
-            // console.log(response)
-            if(response.msg === "Token has expired"){
-                alert("session expired!!")
-                window.location.href = '../UI/login.html'
-            }else if(response.status === 201){
-                alert(response.message)
-                viewMeetup(view_url);
-                notify(response.message,status="success");
-                document.getElementById("question-form").reset();
-                submit.innerHTML = "Post Question";
-                submit.removeAttribute("disabled", "disabled");
-            }else{
-                alert(response.error)
-                notify(response.error,status="error");
-                submit.innerHTML = "Post Question";
-                submit.removeAttribute("disabled", "disabled");
-            }
-        })
-    }else{
-        alert("You have to be logged in user in order to post a question")
-    }
-  
-}
 
 
