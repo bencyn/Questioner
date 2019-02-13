@@ -154,11 +154,7 @@ class BaseTest(unittest.TestCase):
         # self.client.post(self.register_url, data = json.dumps(self.users[0]), content_type="application/json")
         # self.client.post(self.login_url, data = json.dumps(self.loging_data), content_type="application/json") 
        
-        get_user_url= 'api/v2/auths/token/user'
-        response = self.client.get(get_user_url,content_type = "application/json",headers=self._get_header())
-        result = json.loads(response.data.decode('utf-8'))
-        id = result["user"][0]["id"]
-        self.post_meetup_url='api/v2/auth/{}/meetups'.format(id)
+        self.post_meetup_url='api/v2/auth/meetups'
 
         return self.post_meetup_url  
     

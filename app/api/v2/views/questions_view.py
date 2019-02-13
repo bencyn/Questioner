@@ -20,6 +20,25 @@ def get_all_questions():
         "question":questions
     }),200
 
+@v2.route("/questions/<int:id>", methods = ['GET'])
+def get_specific_question(id):
+    ''' this function gets a  specific meetup by id'''
+    question=question_object.get_with_user("questions","created_by","questions.id",id)
+    comments=question_object.get_with_user("comments","user_id","question_id",id)
+    # comments=question_object.get_by_key("comments","question_id",id)
+    if question:
+        return jsonify({
+            "status":200,
+            "question":question,
+            "comments":comments
+        }),200
+    else:
+        return jsonify({
+            "status":401,
+            "error":"question not found"
+        }),404
+
+
 @v2.route("/meetups/<int:meetup_id>/questions", methods=['POST'])
 @app.jwt_required
 def create_question(meetup_id):
