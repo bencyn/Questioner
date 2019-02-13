@@ -81,9 +81,9 @@ class User(BaseModel):
         """ get a specific by users id"""
 
         user =self.get_by_key("users","id",id)
-        feeds =''
-        questions_posted=''
-        questions_commented =''
+        feeds =self.user_profile(id,status="feeds")
+        questions_posted=self.user_profile(id,status="posted")
+        questions_commented =self.user_profile(id,status="commented")
 
         key="user"
         error = "User not found"
@@ -91,7 +91,10 @@ class User(BaseModel):
         if user:
             return jsonify({
                 "status":200,
-                "{}".format(key):user
+                "{}".format(key):user,
+                "feeds":feeds,
+                "questions_posted":questions_posted,
+                "questions_commented":questions_commented
             }),200
         else:
             return jsonify({
