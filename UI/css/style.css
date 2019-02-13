@@ -318,6 +318,8 @@ input , textarea{
     padding: .375rem .75rem;
     font-size: 1rem;
     line-height: 0.5;
+    font-size: 15px !important;
+    line-height: 1.5em !important;
     color: #495057;
     background-color: #fff;
     background-clip: padding-box;
