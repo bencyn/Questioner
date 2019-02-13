@@ -120,8 +120,7 @@ function upvoteQuestion(e){
                 // alert(response.message)
                 console.log(response.data)
                 viewMeetup(view_url);
-            }
-            else{
+            }else{
                 alert(response.error)
                 notify(response.error,status="error");
                 // hideNotification();
@@ -159,7 +158,6 @@ function downvoteQuestion(e){
         alert("You have to be logged in user in order to post a question")
     }
 }
-
 
 function postQuestion(e){
     e.preventDefault();
