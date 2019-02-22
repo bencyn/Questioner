@@ -3,9 +3,12 @@ import base from './base.js';
 
 let upcoming_url = '/meetups/upcoming/';
 var notification = document.getElementById('notification');
+var loader =  document.querySelector('.loader');
 var is_admin =localStorage.getItem("is_admin");
 window.onload = function () {
+    loader.style.display='block';
     upcomingMeetups()
+
     let message = sessionStorage.getItem('success');
 
     if(message){
@@ -70,6 +73,8 @@ function upcomingMeetups(){
                 
             }
             document.getElementById('meetups').innerHTML=result
+
+            loader.style.display='none';
             for(var count=0; count < data.meetup.length; count++){
                 let meetup = data.meetup[count]
                 document.getElementById(meetup.id).addEventListener('click', viewMeetup);
