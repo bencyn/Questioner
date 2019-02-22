@@ -140,7 +140,7 @@ article div{
     width: 100%;
     color: #009688;
     margin-bottom: 10px;
-   
+   text-align: center;
 }
 .meetup-container{
     border-radius: 5px;
@@ -696,24 +696,22 @@ footer {
 }
 /* css loader */
 .loader {
-    border: 16px solid #f3f3f3;
+    display: none;
+    border: 16px solid #f3f3f3; /* Light grey */
+
+    border-top: 16px solid #009688;
+    border-bottom: 16px solid #009688;
     border-radius: 50%;
-    border-top: 16px solid #3498db;
     width: 120px;
     height: 120px;
-    -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
-  }
-  
-/* Safari */
-@-webkit-keyframes spin {
-0% { -webkit-transform: rotate(0deg); }
-100% { -webkit-transform: rotate(360deg); }
+    margin: 0 auto;
+    margin-top: 80px;
 }
 
 @keyframes spin {
-0% { transform: rotate(0deg); }
-100% { transform: rotate(360deg); }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 @media (min-width: 410px) {
    .meetup-container .meetup-item {
