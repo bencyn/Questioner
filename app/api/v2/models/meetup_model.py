@@ -41,7 +41,7 @@ class Meetup(BaseModel):
                 }), 401
             if admin == "1":
                 sql = """ INSERT INTO meetups (happening_on,location,images,topic,tags,body,user_id)
-                        VALUES('{}','{}','{}','{}','{}','{}','{}') RETURNING meetups.id;""".format(self.happening_on,self.location,self.images,self.topic,
+                        VALUES('%s','%s','%s','%s','%s','%s','%s') RETURNING meetups.id;"""%(self.happening_on,self.location,self.images,self.topic,
                          self.tags,self.body,self.user_id)
 
                 save_meetup=self.save_data(sql)
