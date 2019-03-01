@@ -5,6 +5,7 @@ let upcoming_url = '/meetups/upcoming/';
 var notification = document.getElementById('notification');
 var loader =  document.querySelector('.loader');
 var is_admin =localStorage.getItem("is_admin");
+var username =localStorage.getItem("username");
 window.onload = function () {
     loader.style.display='block';
     upcomingMeetups()
@@ -34,7 +35,7 @@ function upcomingMeetups(){
                 }else{
                     image="https://cdn.dribbble.com/users/1807056/screenshots/4666838/dribbble_404.png"
                 }
-                if(is_admin === "1"){
+                if(is_admin === "1" && username==="admin"){
                     result +=  
                     `<div class="meetup-item">
                         <a class="meetup-link" id=${meetup.id} data-image=${image} href="#">
