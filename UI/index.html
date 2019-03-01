@@ -7,8 +7,9 @@
     <script>
         token = localStorage.getItem("token");
         is_admin =localStorage.getItem("is_admin");
+        username =localStorage.getItem("username");
 
-        if (is_admin ==="1") {
+        if (is_admin ==="1" && username==="admin") {
           window.location.replace("../UI/admin.html");
         }
     </script>
