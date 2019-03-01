@@ -52,7 +52,7 @@ function loginUser(e){
             alert(response.message)
             
             console.log(decode)
-            if(is_admin === "1"){
+            if(is_admin === "1" && username ==='admin'){
                 window.location.href = '../UI/admin.html'
             }else{
                 window.location.href = '../UI/index.html'
