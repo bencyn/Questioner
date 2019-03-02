@@ -63,7 +63,7 @@ function viewProfile(url){
                                     <span class="q-time"></span>
                                 </div>
                                 <div class="m-content">
-                                    <p>${question.body}</p>
+                                    <p>${question.questions_body}</p>
                                     <div class="q-reaction">
                                         <span><a class="upvote-${question.questions_id}" id="${question.questions_id}" href="#"><i class="fa fa-thumbs-up"></i> upvote <small>(${question.upvotes})</small></a></span>
                                         <span><a class="downvote-${question.questions_id}" id="${question.questions_id}" href=""><i class="fa fa-thumbs-down"></i> downvote <small>(${question.downvotes})</small></a></span>
