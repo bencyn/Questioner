@@ -181,7 +181,7 @@ class BaseModel:
         """ get user profile statistics """
         if (status =="feeds"):
             # query = """SELECT *,{x}.id as {x}_id FROM %s RIGHT JOIN users ON users.id = CAST (%s AS INTEGER) WHERE %s='%s' ORDER BY {x}.id DESC;""".format(x=table)%(table,cast,field,value)
-            query=""" SELECT *,questions.id as questions_id FROM questions FULL OUTER JOIN users ON users.id = CAST (questions.created_by AS INTEGER) FULL OUTER JOIN meetups ON meetups.id=CAST (questions.meetup_id AS INTEGER)
+            query=""" SELECT *,questions.body as questions_body,questions.id as questions_id FROM questions FULL OUTER JOIN users ON users.id = CAST (questions.created_by AS INTEGER) FULL OUTER JOIN meetups ON meetups.id=CAST (questions.meetup_id AS INTEGER)
                     FULL OUTER JOIN rsvps ON  CAST (rsvps.meetup_id AS INTEGER)=meetups.id 
                     WHERE rsvps.user_id='{}' ORDER BY questions.upvotes DESC LIMIT 5;""".format(user_id)
         if(status=="posted"):
