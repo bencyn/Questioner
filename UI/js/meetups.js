@@ -79,7 +79,7 @@ function upcomingMeetups(){
             for(var count=0; count < data.meetup.length; count++){
                 let meetup = data.meetup[count]
                 document.getElementById(meetup.id).addEventListener('click', viewMeetup);
-                if(is_admin === "1"){
+                if(is_admin === "1" && username==="admin"){
                     document.querySelector('[data-id="'+meetup.id+'"]').addEventListener('click', deleteMeetup)
                 }
             }
